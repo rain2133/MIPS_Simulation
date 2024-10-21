@@ -47,29 +47,79 @@ struct INSTR_FUCSIM{
     char opcode;//for timing simulation insts seq
 };
 
-#define ALU     0x01
-#define BRANCH  0x02
-#define JMP     0x04
-#define LOAD    0x08
-#define STORE   0x10
+enum COM_CODE{
+    NOP, ALU, FPU, BRANCH, JMP, JR, LOAD, STORE, MOVE, COM_CODE_NUM
+};
 
 struct INSTR_TIMSIM{
     char OPCODE,RS,RT,RD;
     int IMM;
-};
+}INSTR_TIMSIM_NOP;
 
 struct STAGE{
-    char valid,busy,block,cycle;
+    char valid,stall;
+    //valid定义是该段没有暂停被继承到下一段
+    //如果是true表明该段或者后续段处于stall状态下一个时钟上沿将stall状态取消
     struct INSTR_TIMSIM inst;
-}EmptyStage;
+};
+
+struct COMPONENT{
+    char busy, cyctim, busytim;
+};
+struct MIPS_pipeline{
+    struct COMPONENT 
+        ALU_, FPU_, DM_, IM_;
+    struct STAGE stages[5];
+};
+
+char alu[] = "ALU";
+char branch[] = "BRANCH";
+char jmp[] = "JMP";
+char move[] = "MOVE";
+char load[] = "LOAD";
+char store[] = "STORE";
+char jr[] = "JR";
+char fpu[] = "FPU";
+char error[] = "ERR";
+char stall[] = "STALL";
+char nop[] = "----";
+
+// 返回指令类型的函数，用于打印
+char *itype(struct STAGE stg) {
+    if (stg.stall)
+        return stall;
+    switch (stg.inst.OPCODE) {//ALU, FPU, BRANCH, JMP, JR, LOAD, STORE, MOVE
+        case ALU:
+            return alu;
+        case BRANCH:
+            return branch;
+        case JMP:
+            return jmp;
+        case LOAD:
+            return load;
+        case STORE:
+            return store;
+        case FPU:
+            return fpu;
+        case JR:
+            return jr;
+        case MOVE:
+            return move;
+        case NOP:
+            return nop;
+        default:
+            return error;
+    }
+}
 
 
 #define TEXT_SZ 64
 struct shared_mem{
     char finish;
     int inst_begin,inst_end;
+    int mips_pipeline_cycle;
     // struct INSTR_FUCSIM insts[TEXT_SZ];//记录写入和读取的文本
-    struct STAGE        stages[5];//inst_begin进入stageF后该流水线各部分的状态
+    struct MIPS_pipeline pipeline;//inst_begin进入stageF后该流水线各部分和各部件的状态
     struct INSTR_TIMSIM insts[TEXT_SZ];
 };
 
@@ -96,6 +146,12 @@ struct INSTR_TIMSIM *FUCDecode2TIM(struct INSTR_FUCSIM *inst){
     inst_timsim->RS = inst->RS;
     inst_timsim->RT = inst->RT;
     inst_timsim->RD = inst->RD;
+    if(inst_timsim->OPCODE == FPU){
+        //把浮点寄存器和整型寄存器区分开
+        inst_timsim->RS += ireg_size;
+        inst_timsim->RT += ireg_size;
+        inst_timsim->RD += ireg_size;
+    }
     inst_timsim->IMM = inst->IMM;
     return inst_timsim;
 }
@@ -285,18 +341,109 @@ long INSN_NOP(long pc, struct INSTR_FUCSIM *inst){
 模拟到当前指令进入stageF,如果finish = 1那么需要将指令模拟到从stageW流出
 
 */
-void timing_simulation(struct INSTR_TIMSIM *inst, struct STAGE **stages){
-    struct STAGE *StageF = stages[0],
-                 *StageD = stages[1],
-                 *StageE = stages[2],
-                 *StageM = stages[3],
-                 *StageW = stages[4];
-    
-    *StageW = EmptyStage;
-    if(StageM->busy){
-        *StageM = *StageE;
+void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M_P_cycle){
+    struct STAGE StageF = P->stages[0],
+                 StageD = P->stages[1],
+                 StageE = P->stages[2],
+                 StageM = P->stages[3],
+                 StageW = P->stages[4];
+    struct STAGE StageI={true, false,*inst};
+    //每个周期各个段的时序模拟在时钟上沿发生，判断流水线是否满足暂停
+    printf("Stage %s piped in\t\n",itype(StageI));
+    again:
+    *M_P_cycle += 1;
+    // if(*M_P_cycle >= 50)exit(-1);
+
+    printf("cycle %7d\t | IF:%s\t| ID:%s\t | EX:%s\t | MEM:%s\t | WB:%s\t |\n",
+           *M_P_cycle, itype(StageF), itype(StageD),itype(StageE), itype(StageM), itype(StageW));
+
+    //StageW
+    StageW.stall = false;
+    if(!false){
+        StageW = StageM;
+        StageW.valid = true; 
+        //WB always not being stallE
     }
-    if(StageM->block || (StageM->inst.OPCODE == LOAD && ()))
+        
+    //StageM
+    StageM.stall = false;
+    if(!(P->DM_.busy)){
+        StageM = StageE;
+        StageM.valid = true;
+    }
+    else{
+        //等引入cache未命中才会进入这个分支
+        if(!StageW.stall){
+            StageM.stall = true;
+        }
+        StageM.valid = false;
+        //cache未命中处理完成指令流走（后续拓展）
+    }
+
+    //StageE
+    StageE.stall = false;
+    if(!(!StageW.valid || !StageM.valid || P->FPU_.busy || P->ALU_.busy || 
+         (StageE.inst.OPCODE == LOAD && StageE.valid &&
+         //LW指令需要走到MEM段才能让数据正确定向到ID段
+         //如果LW指令流出此处且有冲突那么该条件将会在下一个cycle取消暂停
+          (StageD.inst.RS == StageE.inst.RD ||  
+           StageD.inst.RT == StageE.inst.RD)
+         ) 
+        ) ){
+        StageE = StageD;
+        StageE.valid = true;
+    }
+    else{
+        //暂停流水线等待LOAD进入MEM段读出数据
+        if(!StageW.stall && !StageM.stall){
+            StageE.stall = true;
+        }
+        StageE.valid = false;
+    }
+
+    //StageD
+    StageD.stall = false;
+    if(!(!StageW.valid || !StageM.valid|| !StageE.valid //|| 
+        //  (StageF.inst.OPCODE == BRANCH && StageF.valid &&
+        //   (StageD.inst.RS == StageE.inst.RD || StageD.inst.RT == StageE.inst.RD))
+        // || (StageF.inst.OPCODE == JR && StageF.valid &&
+        //   (StageD.inst.RS == StageE.inst.RD))
+        // || (StageF.inst.OPCODE == JMP && StageF.valid )
+        )){
+        StageD = StageF;
+        StageD.valid = true;
+    }
+    else{
+        if(!StageW.stall && !StageM.stall && !StageE.stall){
+            StageD.stall = true;
+        }
+        StageD.valid = false;
+    }
+
+    //StageF
+    //如果未继承段是分支指令那么暂停流水线等待IDEX段完成分支跳转
+    StageF.stall = false;
+    if(!(!StageW.valid || !StageM.valid|| !StageE.valid || !StageD.valid ||
+        P->IM_.busy ||
+        (StageF.inst.OPCODE == BRANCH && StageF.valid)
+      ||(StageF.inst.OPCODE == JMP    && StageF.valid) 
+      || (StageF.inst.OPCODE == JR    && StageF.valid)
+        )){
+        StageF.inst = *inst;
+        StageF.valid  = true;
+    }else{
+        if(!StageW.stall && !StageM.stall && !StageE.stall && !StageD.stall){
+            StageF.stall = true;
+        }
+        StageF.valid = false;
+        goto again;
+    }
+
+    P->stages[0] = StageF,
+    P->stages[1] = StageD,
+    P->stages[2] = StageE,
+    P->stages[3] = StageM,
+    P->stages[4] = StageW;
 }
 
 // shmget：申请共享内存
@@ -307,8 +454,10 @@ void timing_simulation(struct INSTR_TIMSIM *inst, struct STAGE **stages){
 void function_simulation(struct INSTR_FUCSIM *inst){
 
     if (inst->OPCODE != OP_RTYPE && inst->OPCODE != OP_FTYPE){// 若不是R and F型指令
+        printf("not R or F tpye\n");
         switch (inst->OPCODE)
         {
+            
             case OP_J:
             pc = INSN_J(pc,inst);   mult_cycle+=3;inst->opcode = JMP;   break;
             case OP_BEQ:
@@ -316,42 +465,45 @@ void function_simulation(struct INSTR_FUCSIM *inst){
             case OP_BNE:
             pc = INSN_BNE(pc,inst); mult_cycle+=3;inst->opcode = BRANCH;break;
             case OP_ADDI:
-            pc = INSN_ADDI(pc,inst);mult_cycle+=5;inst->opcode = ALU;   break;
+            pc = INSN_ADDI(pc,inst);mult_cycle+=5;inst->opcode = ALU;printf("addi\n");   break;
+            // pc = INSN_ADDI(pc,inst);mult_cycle+=5;inst->opcode = ALU;   break;
             case OP_SLTI:
             pc = INSN_SLTI(pc,inst);mult_cycle+=5;inst->opcode = ALU;   break;
             case OP_LW:
             pc = INSN_LW(pc,inst);  mult_cycle+=5;inst->opcode = LOAD;  break;
             case OP_SW:
-            pc = INSN_SW(pc,inst);  mult_cycle+=5;inst->opcode = STORE; break;
+            pc = INSN_SW(pc,inst);  mult_cycle+=5;inst->opcode = STORE;printf("sw\n");  break;
+            // pc = INSN_SW(pc,inst);  mult_cycle+=5;inst->opcode = STORE;  break;
             case OP_LWC1:
             pc = INSN_LWC1(pc,inst);mult_cycle+=5;inst->opcode = LOAD;  break;
             case OP_SWC1:
             pc = INSN_SWC1(pc,inst);mult_cycle+=5;inst->opcode = STORE; break;
             case OP_MOVE:
-            pc = INSN_MOVE(pc,inst);mult_cycle+=5;inst->opcode = LOAD;  break;
+            pc = INSN_MOVE(pc,inst);mult_cycle+=5;inst->opcode = MOVE;printf("move\n");  break;
+            // pc = INSN_MOVE(pc,inst);mult_cycle+=5;inst->opcode = MOVE;  break;
             default: printf("error: unimplemented instruction\n"); exit(-1);
         }
 
     }
     else if(inst->OPCODE == OP_RTYPE){
-        // printf("R-type\n");
+        printf("R-type\n");
         switch (inst->FUNC){
             case OP_ADD:
             pc = INSN_ADD(pc, inst);mult_cycle+=5;inst->opcode = ALU;   break;
             case OP_JR:
-            pc = INSN_JR(pc, inst); mult_cycle+=3;inst->opcode = ALU;   break;//待验证opcode
+            pc = INSN_JR(pc, inst); mult_cycle+=3;inst->opcode = JR;   break;//待验证opcode
             case OP_SLL:
             pc = INSN_SLL(pc, inst);mult_cycle+=5;inst->opcode = ALU;   break;
             default: printf("error: unimplemented instruction\n"); exit(-1);
         }
     }
     else{
-        // printf("F-type\n");
+        printf("F-type\n");
         switch (inst->FUNC){
             case OP_ADDS:
-            pc = INSN_ADDS(pc, inst);mult_cycle+=6;inst->opcode = ALU; break;
+            pc = INSN_ADDS(pc, inst);mult_cycle+=6;inst->opcode = FPU; break;
             case OP_MULS:
-            pc = INSN_MULS(pc, inst);mult_cycle+=8;inst->opcode = ALU; break;
+            pc = INSN_MULS(pc, inst);mult_cycle+=8;inst->opcode = FPU; break;
             default: printf("error: unimplemented instruction\n"); exit(-1);
         }
     }
@@ -397,13 +549,26 @@ void Execution(){
             //计算多周期数量
             if(data->finish == 1)
                 break;
-            timing_simulation((struct INSTR_TIMSIM *)&data->insts[data->inst_begin++],
-                              (struct STAGE **) &data->stages);
+            if(data->inst_begin < data->inst_end){
+                printf("begin = %d end = %d\n", data->inst_begin, data->inst_end);
+                timing_simulation((struct INSTR_TIMSIM *)&data->insts[data->inst_begin % TEXT_SZ],
+                              (struct MIPS_pipeline *) &data->pipeline,(int *)&data->mips_pipeline_cycle);
+                data->inst_begin++;
+            }
+                
             Sem_post(&instnRAW);
         }
-        while(data->inst_begin < data->inst_end)
-            timing_simulation((struct INSTR_TIMSIM *)&data->insts[data->inst_begin++],
-                              (struct STAGE **) &data->stages);
+        while(data->inst_begin < data->inst_end ){
+            timing_simulation((struct INSTR_TIMSIM *)&data->insts[data->inst_begin % TEXT_SZ],
+                              (struct MIPS_pipeline *) &data->pipeline,(int *)&data->mips_pipeline_cycle);
+            data->inst_begin++;
+        }
+        while(memcmp((struct INSTR_TIMSIM *)&data->pipeline.stages[4].inst,
+                     (struct INSTR_TIMSIM *)&INSTR_TIMSIM_NOP,
+                     sizeof(struct INSTR_TIMSIM)) != 0){
+            timing_simulation((struct INSTR_TIMSIM *)&INSTR_TIMSIM_NOP,
+                              (struct MIPS_pipeline *) &data->pipeline,(int *)&data->mips_pipeline_cycle);
+        }
         Sem_post(&instnRAW);
         shmdt(data);
         exit(0);
@@ -418,8 +583,15 @@ void Execution(){
             exit(1);
         }
         // printf("data = %lx",data);
-        memset(data, 0, sizeof(struct shared_mem));
         
+        
+        //init data pipeline
+        Sem_wait(&instnRAW);
+        memset(data, 0, sizeof(struct shared_mem));
+        for(int i = 0;i < 5;i++)
+            data->pipeline.stages[i].valid = true;
+        Sem_post(&instnRAW);
+
         int i = 0;
         for (;pc;){    
 
@@ -439,8 +611,8 @@ void Execution(){
                 Sem_post(&instnRAW);
                 Sem_wait(&instnRAW);
             }
-            memcpy((void *)&data->insts[data->inst_end % TEXT_SZ],inst,sizeof(struct INSTR_TIMSIM));
-            // printf("op = %d\n",data->insts[data->inst_end].OPCODE)
+            memcpy((void *)&data->insts[data->inst_end % TEXT_SZ],inst_timsim,sizeof(struct INSTR_TIMSIM));
+            printf("op = %d\n",data->insts[data->inst_end].OPCODE);
             data->inst_end++;
             if(pc == 0)data->finish = 1;
             Sem_post(&instnRAW);
@@ -544,7 +716,7 @@ void readinst_data(){
 
 int main(int argc,char *argv[]){
     init();
-    test();
+    // test();
     readinst_data();
     Execution();
 

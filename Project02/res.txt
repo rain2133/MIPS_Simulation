@@ -1,326 +1,79 @@
-uh1 = 245, uh2 = 245
-uh3 = 0.120000, uh4 = 0.120000
-accept mem read, mem write
-lwc1:rt = 0 , fd = 0.900000, addr = 0
-lwc1:rt = 2 , fd = 0.000000, addr = 7ef4
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 0.000000 fs = 0.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 0.500000 fs = 0.000000 ft = 0.500000
-lwc1:rt = 2 , fd = 1.000000, addr = 7ef8
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 0.900000 fs = 1.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 1.400000 fs = 0.900000 ft = 0.500000
-lwc1:rt = 2 , fd = 2.000000, addr = 7efc
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 1.800000 fs = 2.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 2.300000 fs = 1.800000 ft = 0.500000
-lwc1:rt = 2 , fd = 3.000000, addr = 7f00
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 2.700000 fs = 3.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 3.200000 fs = 2.700000 ft = 0.500000
-lwc1:rt = 2 , fd = 4.000000, addr = 7f04
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 3.600000 fs = 4.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 4.100000 fs = 3.600000 ft = 0.500000
-lwc1:rt = 2 , fd = 5.000000, addr = 7f08
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 4.500000 fs = 5.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 5.000000 fs = 4.500000 ft = 0.500000
-lwc1:rt = 2 , fd = 6.000000, addr = 7f0c
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 5.400000 fs = 6.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 5.900000 fs = 5.400000 ft = 0.500000
-lwc1:rt = 2 , fd = 7.000000, addr = 7f10
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 6.300000 fs = 7.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 6.800000 fs = 6.300000 ft = 0.500000
-lwc1:rt = 2 , fd = 8.000000, addr = 7f14
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 7.200000 fs = 8.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 7.700000 fs = 7.200000 ft = 0.500000
-lwc1:rt = 2 , fd = 9.000000, addr = 7f18
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 8.099999 fs = 9.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 8.599999 fs = 8.099999 ft = 0.500000
-lwc1:rt = 2 , fd = 10.000000, addr = 7f1c
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 9.000000 fs = 10.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 9.500000 fs = 9.000000 ft = 0.500000
-lwc1:rt = 2 , fd = 11.000000, addr = 7f20
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 9.900000 fs = 11.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 10.400000 fs = 9.900000 ft = 0.500000
-lwc1:rt = 2 , fd = 12.000000, addr = 7f24
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 10.799999 fs = 12.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 11.299999 fs = 10.799999 ft = 0.500000
-lwc1:rt = 2 , fd = 13.000000, addr = 7f28
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 11.700000 fs = 13.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 12.200000 fs = 11.700000 ft = 0.500000
-lwc1:rt = 2 , fd = 14.000000, addr = 7f2c
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 12.599999 fs = 14.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 13.099999 fs = 12.599999 ft = 0.500000
-lwc1:rt = 2 , fd = 15.000000, addr = 7f30
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 13.500000 fs = 15.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 14.000000 fs = 13.500000 ft = 0.500000
-lwc1:rt = 2 , fd = 16.000000, addr = 7f34
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 14.400000 fs = 16.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 14.900000 fs = 14.400000 ft = 0.500000
-lwc1:rt = 2 , fd = 17.000000, addr = 7f38
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 15.299999 fs = 17.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 15.799999 fs = 15.299999 ft = 0.500000
-lwc1:rt = 2 , fd = 18.000000, addr = 7f3c
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 16.199999 fs = 18.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 16.699999 fs = 16.199999 ft = 0.500000
-lwc1:rt = 2 , fd = 19.000000, addr = 7f40
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 17.100000 fs = 19.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 17.600000 fs = 17.100000 ft = 0.500000
-lwc1:rt = 2 , fd = 20.000000, addr = 7f44
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 18.000000 fs = 20.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 18.500000 fs = 18.000000 ft = 0.500000
-lwc1:rt = 2 , fd = 21.000000, addr = 7f48
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 18.900000 fs = 21.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 19.400000 fs = 18.900000 ft = 0.500000
-lwc1:rt = 2 , fd = 22.000000, addr = 7f4c
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 19.799999 fs = 22.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 20.299999 fs = 19.799999 ft = 0.500000
-lwc1:rt = 2 , fd = 23.000000, addr = 7f50
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 20.699999 fs = 23.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 21.199999 fs = 20.699999 ft = 0.500000
-lwc1:rt = 2 , fd = 24.000000, addr = 7f54
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 21.599998 fs = 24.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 22.099998 fs = 21.599998 ft = 0.500000
-lwc1:rt = 2 , fd = 25.000000, addr = 7f58
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 22.500000 fs = 25.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 23.000000 fs = 22.500000 ft = 0.500000
-lwc1:rt = 2 , fd = 26.000000, addr = 7f5c
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 23.400000 fs = 26.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 23.900000 fs = 23.400000 ft = 0.500000
-lwc1:rt = 2 , fd = 27.000000, addr = 7f60
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 24.299999 fs = 27.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 24.799999 fs = 24.299999 ft = 0.500000
-lwc1:rt = 2 , fd = 28.000000, addr = 7f64
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 25.199999 fs = 28.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 25.699999 fs = 25.199999 ft = 0.500000
-lwc1:rt = 2 , fd = 29.000000, addr = 7f68
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 26.099998 fs = 29.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 26.599998 fs = 26.099998 ft = 0.500000
-lwc1:rt = 2 , fd = 30.000000, addr = 7f6c
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 27.000000 fs = 30.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 27.500000 fs = 27.000000 ft = 0.500000
-lwc1:rt = 2 , fd = 31.000000, addr = 7f70
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 27.900000 fs = 31.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 28.400000 fs = 27.900000 ft = 0.500000
-lwc1:rt = 2 , fd = 32.000000, addr = 7f74
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 28.799999 fs = 32.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 29.299999 fs = 28.799999 ft = 0.500000
-lwc1:rt = 2 , fd = 33.000000, addr = 7f78
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 29.699999 fs = 33.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 30.199999 fs = 29.699999 ft = 0.500000
-lwc1:rt = 2 , fd = 34.000000, addr = 7f7c
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 30.599998 fs = 34.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 31.099998 fs = 30.599998 ft = 0.500000
-lwc1:rt = 2 , fd = 35.000000, addr = 7f80
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 31.500000 fs = 35.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 32.000000 fs = 31.500000 ft = 0.500000
-lwc1:rt = 2 , fd = 36.000000, addr = 7f84
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 32.399998 fs = 36.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 32.899998 fs = 32.399998 ft = 0.500000
-lwc1:rt = 2 , fd = 37.000000, addr = 7f88
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 33.299999 fs = 37.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 33.799999 fs = 33.299999 ft = 0.500000
-lwc1:rt = 2 , fd = 38.000000, addr = 7f8c
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 34.200001 fs = 38.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 34.700001 fs = 34.200001 ft = 0.500000
-lwc1:rt = 2 , fd = 39.000000, addr = 7f90
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 35.099998 fs = 39.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 35.599998 fs = 35.099998 ft = 0.500000
-lwc1:rt = 2 , fd = 40.000000, addr = 7f94
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 36.000000 fs = 40.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 36.500000 fs = 36.000000 ft = 0.500000
-lwc1:rt = 2 , fd = 41.000000, addr = 7f98
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 36.899998 fs = 41.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 37.399998 fs = 36.899998 ft = 0.500000
-lwc1:rt = 2 , fd = 42.000000, addr = 7f9c
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 37.799999 fs = 42.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 38.299999 fs = 37.799999 ft = 0.500000
-lwc1:rt = 2 , fd = 43.000000, addr = 7fa0
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 38.700001 fs = 43.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 39.200001 fs = 38.700001 ft = 0.500000
-lwc1:rt = 2 , fd = 44.000000, addr = 7fa4
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 39.599998 fs = 44.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 40.099998 fs = 39.599998 ft = 0.500000
-lwc1:rt = 2 , fd = 45.000000, addr = 7fa8
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 40.500000 fs = 45.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 41.000000 fs = 40.500000 ft = 0.500000
-lwc1:rt = 2 , fd = 46.000000, addr = 7fac
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 41.399998 fs = 46.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 41.899998 fs = 41.399998 ft = 0.500000
-lwc1:rt = 2 , fd = 47.000000, addr = 7fb0
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 42.299999 fs = 47.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 42.799999 fs = 42.299999 ft = 0.500000
-lwc1:rt = 2 , fd = 48.000000, addr = 7fb4
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 43.199997 fs = 48.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 43.699997 fs = 43.199997 ft = 0.500000
-lwc1:rt = 2 , fd = 49.000000, addr = 7fb8
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 44.099998 fs = 49.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 44.599998 fs = 44.099998 ft = 0.500000
-lwc1:rt = 2 , fd = 50.000000, addr = 7fbc
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 45.000000 fs = 50.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 45.500000 fs = 45.000000 ft = 0.500000
-lwc1:rt = 2 , fd = 51.000000, addr = 7fc0
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 45.899998 fs = 51.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 46.399998 fs = 45.899998 ft = 0.500000
-lwc1:rt = 2 , fd = 52.000000, addr = 7fc4
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 46.799999 fs = 52.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 47.299999 fs = 46.799999 ft = 0.500000
-lwc1:rt = 2 , fd = 53.000000, addr = 7fc8
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 47.699997 fs = 53.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 48.199997 fs = 47.699997 ft = 0.500000
-lwc1:rt = 2 , fd = 54.000000, addr = 7fcc
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 48.599998 fs = 54.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 49.099998 fs = 48.599998 ft = 0.500000
-lwc1:rt = 2 , fd = 55.000000, addr = 7fd0
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 49.500000 fs = 55.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 50.000000 fs = 49.500000 ft = 0.500000
-lwc1:rt = 2 , fd = 56.000000, addr = 7fd4
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 50.399998 fs = 56.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 50.899998 fs = 50.399998 ft = 0.500000
-lwc1:rt = 2 , fd = 57.000000, addr = 7fd8
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 51.299999 fs = 57.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 51.799999 fs = 51.299999 ft = 0.500000
-lwc1:rt = 2 , fd = 58.000000, addr = 7fdc
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 52.199997 fs = 58.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 52.699997 fs = 52.199997 ft = 0.500000
-lwc1:rt = 2 , fd = 59.000000, addr = 7fe0
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 53.099998 fs = 59.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 53.599998 fs = 53.099998 ft = 0.500000
-lwc1:rt = 2 , fd = 60.000000, addr = 7fe4
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 54.000000 fs = 60.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 54.500000 fs = 54.000000 ft = 0.500000
-lwc1:rt = 2 , fd = 61.000000, addr = 7fe8
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 54.899998 fs = 61.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 55.399998 fs = 54.899998 ft = 0.500000
-lwc1:rt = 2 , fd = 62.000000, addr = 7fec
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 55.799999 fs = 62.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 56.299999 fs = 55.799999 ft = 0.500000
-lwc1:rt = 2 , fd = 63.000000, addr = 7ff0
-lwc1:rt = 0 , fd = 0.900000, addr = 7ef0
-muls: fd = 56.699997 fs = 63.000000 ft = 0.900000
-lwc1:rt = 0 , fd = 0.500000, addr = 4
-adds: fd = 57.199997 fs = 56.699997 ft = 0.500000
-Single-cycle MIPS : 979
- Multi-cycle MIPS : 4887
+begin = 0 end = 1
+Stage MOVE pipe in	
+cycle       1	 | IF:----	| ID:----	 | EX:----	 | MEM:----	 | WB:----	 |
+begin = 1 end = 17
+Stage ERR pipe in	
+cycle       2	 | IF:MOVE	| ID:----	 | EX:----	 | MEM:----	 | WB:----	 |
+begin = 2 end = 18
+Stage ERR pipe in	
+cycle       3	 | IF:ERR	| ID:MOVE	 | EX:----	 | MEM:----	 | WB:----	 |
+begin = 3 end = 18
+Stage ERR pipe in	
+cycle       4	 | IF:ERR	| ID:ERR	 | EX:MOVE	 | MEM:----	 | WB:----	 |
+begin = 4 end = 19
+Stage ERR pipe in	
+cycle       5	 | IF:ERR	| ID:ERR	 | EX:ERR	 | MEM:MOVE	 | WB:----	 |
+begin = 5 end = 19
+Stage ERR pipe in	
+cycle       6	 | IF:ERR	| ID:ERR	 | EX:ERR	 | MEM:ERR	 | WB:MOVE	 |
+begin = 6 end = 19
+Stage ERR pipe in	
+cycle       7	 | IF:ERR	| ID:ERR	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+begin = 7 end = 19
+Stage MOVE pipe in	
+cycle       8	 | IF:ERR	| ID:ERR	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+begin = 8 end = 19
+Stage ERR pipe in	
+cycle       9	 | IF:MOVE	| ID:ERR	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+begin = 9 end = 19
+Stage ERR pipe in	
+cycle      10	 | IF:ERR	| ID:MOVE	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+begin = 10 end = 20
+Stage FPU pipe in	
+cycle      11	 | IF:ERR	| ID:ERR	 | EX:MOVE	 | MEM:ERR	 | WB:ERR	 |
+begin = 11 end = 20
+Stage ERR pipe in	
+cycle      12	 | IF:FPU	| ID:ERR	 | EX:ERR	 | MEM:MOVE	 | WB:ERR	 |
+begin = 12 end = 21
+Stage ERR pipe in	
+cycle      13	 | IF:ERR	| ID:FPU	 | EX:ERR	 | MEM:ERR	 | WB:MOVE	 |
+begin = 13 end = 21
+Stage JR pipe in	
+cycle      14	 | IF:ERR	| ID:ERR	 | EX:FPU	 | MEM:ERR	 | WB:ERR	 |
+begin = 14 end = 21
+Stage ERR pipe in	
+cycle      15	 | IF:JR	| ID:ERR	 | EX:ERR	 | MEM:FPU	 | WB:ERR	 |
+cycle      16	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:FPU	 |
+cycle      17	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      18	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      19	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      20	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      21	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      22	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      23	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      24	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      25	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      26	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      27	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      28	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      29	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      30	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      31	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      32	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      33	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      34	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      35	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      36	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      37	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      38	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      39	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      40	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      41	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      42	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      43	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      44	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      45	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      46	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      47	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      48	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
+cycle      49	 | IF:FLUSH	| ID:FLUSH	 | EX:ERR	 | MEM:ERR	 | WB:ERR	 |
