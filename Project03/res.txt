@@ -1,0 +1,3082 @@
+begin = 0 end = 64
+cycle       1	 | IF:------	| ID:------	 | EX:------	 | MEM:------	 | WB:------	 |
+Stage ALU    piped in	
+begin = 1 end = 65
+cycle       2	 | IF:ALU   	| ID:------	 | EX:------	 | MEM:------	 | WB:------	 |
+Stage STORE  piped in	
+begin = 2 end = 65
+cycle       3	 | IF:STORE 	| ID:ALU   	 | EX:------	 | MEM:------	 | WB:------	 |
+Stage STORE  piped in	
+begin = 3 end = 66
+cycle       4	 | IF:STORE 	| ID:STORE 	 | EX:ALU   	 | MEM:------	 | WB:------	 |
+Stage MOVE   piped in	
+begin = 4 end = 67
+cycle       5	 | IF:MOVE  	| ID:STORE 	 | EX:STORE 	 | MEM:ALU   	 | WB:------	 |
+Stage LOAD   piped in	
+begin = 5 end = 68
+cycle       6	 | IF:LOAD  	| ID:MOVE  	 | EX:STORE 	 | MEM:STORE 	 | WB:ALU   	 |
+Stage STORE  piped in	
+begin = 6 end = 69
+cycle       7	 | IF:STORE 	| ID:LOAD  	 | EX:MOVE  	 | MEM:STORE 	 | WB:STORE 	 |
+Stage MOVE   piped in	
+begin = 7 end = 70
+cycle       8	 | IF:MOVE  	| ID:STORE 	 | EX:LOAD  	 | MEM:MOVE  	 | WB:STORE 	 |
+cycle       9	 | IF:MOVE  	| ID:STORE 	 | EX:STALL 	 | MEM:LOAD  	 | WB:MOVE  	 |
+Stage ALU    piped in	
+begin = 8 end = 71
+cycle      10	 | IF:ALU   	| ID:MOVE  	 | EX:STORE 	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 9 end = 72
+cycle      11	 | IF:STORE 	| ID:ALU   	 | EX:MOVE  	 | MEM:STORE 	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 10 end = 73
+cycle      12	 | IF:STORE 	| ID:STORE 	 | EX:ALU   	 | MEM:MOVE  	 | WB:STORE 	 |
+Stage JMP    piped in	
+begin = 11 end = 74
+cycle      13	 | IF:JMP   	| ID:STORE 	 | EX:STORE 	 | MEM:ALU   	 | WB:MOVE  	 |
+cycle      14	 | IF:STALL 	| ID:JMP   	 | EX:STORE 	 | MEM:STORE 	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 12 end = 75
+cycle      15	 | IF:LOAD  	| ID:STALL 	 | EX:JMP   	 | MEM:STORE 	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 13 end = 76
+cycle      16	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:JMP   	 | WB:STORE 	 |
+Stage BRANCH piped in	
+begin = 14 end = 77
+cycle      17	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:JMP   	 |
+cycle      18	 | IF:BRANCH	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 15 end = 78
+cycle      19	 | IF:LOAD  	| ID:BRANCH	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 16 end = 79
+cycle      20	 | IF:ALU   	| ID:LOAD  	 | EX:BRANCH	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 17 end = 80
+cycle      21	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:BRANCH	 | WB:BRANCH	 |
+cycle      22	 | IF:ALU   	| ID:ALU   	 | EX:STALL 	 | MEM:LOAD  	 | WB:BRANCH	 |
+Stage LOAD   piped in	
+begin = 18 end = 81
+cycle      23	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 19 end = 82
+cycle      24	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:STALL 	 |
+Stage FPU    piped in	
+begin = 20 end = 83
+cycle      25	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle      26	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 21 end = 84
+cycle      27	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 22 end = 85
+cycle      28	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 23 end = 86
+cycle      29	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 24 end = 87
+cycle      30	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 25 end = 88
+cycle      31	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 26 end = 89
+cycle      32	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 27 end = 90
+cycle      33	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 28 end = 91
+cycle      34	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 29 end = 92
+cycle      35	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle      36	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 30 end = 93
+cycle      37	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 31 end = 94
+cycle      38	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 32 end = 95
+cycle      39	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle      40	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 33 end = 96
+cycle      41	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 34 end = 97
+cycle      42	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 35 end = 98
+cycle      43	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle      44	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 36 end = 99
+cycle      45	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 37 end = 100
+cycle      46	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 38 end = 101
+cycle      47	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 39 end = 102
+cycle      48	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 40 end = 103
+cycle      49	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 41 end = 104
+cycle      50	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 42 end = 105
+cycle      51	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 43 end = 106
+cycle      52	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 44 end = 107
+cycle      53	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle      54	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 45 end = 108
+cycle      55	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 46 end = 109
+cycle      56	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 47 end = 110
+cycle      57	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle      58	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 48 end = 111
+cycle      59	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 49 end = 112
+cycle      60	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 50 end = 113
+cycle      61	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle      62	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 51 end = 114
+cycle      63	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 52 end = 115
+cycle      64	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 53 end = 116
+cycle      65	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 54 end = 117
+cycle      66	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 55 end = 118
+cycle      67	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 56 end = 119
+cycle      68	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 57 end = 120
+cycle      69	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 58 end = 121
+cycle      70	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 59 end = 122
+cycle      71	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle      72	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 60 end = 123
+cycle      73	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 61 end = 124
+cycle      74	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 62 end = 125
+cycle      75	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle      76	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 63 end = 126
+cycle      77	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 64 end = 127
+cycle      78	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 65 end = 128
+cycle      79	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle      80	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 66 end = 129
+cycle      81	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 67 end = 130
+cycle      82	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 68 end = 131
+cycle      83	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 69 end = 132
+cycle      84	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 70 end = 133
+cycle      85	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 71 end = 134
+cycle      86	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 72 end = 135
+cycle      87	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 73 end = 136
+cycle      88	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 74 end = 137
+cycle      89	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle      90	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 75 end = 138
+cycle      91	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 76 end = 139
+cycle      92	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 77 end = 140
+cycle      93	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle      94	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 78 end = 141
+cycle      95	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 79 end = 142
+cycle      96	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 80 end = 143
+cycle      97	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle      98	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 81 end = 144
+cycle      99	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 82 end = 145
+cycle     100	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 83 end = 146
+cycle     101	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 84 end = 147
+cycle     102	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 85 end = 148
+cycle     103	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 86 end = 149
+cycle     104	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 87 end = 150
+cycle     105	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 88 end = 151
+cycle     106	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 89 end = 152
+cycle     107	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     108	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 90 end = 153
+cycle     109	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 91 end = 154
+cycle     110	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 92 end = 155
+cycle     111	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     112	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 93 end = 156
+cycle     113	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 94 end = 157
+cycle     114	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 95 end = 158
+cycle     115	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     116	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 96 end = 159
+cycle     117	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 97 end = 159
+cycle     118	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 98 end = 159
+cycle     119	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 99 end = 160
+cycle     120	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 100 end = 163
+cycle     121	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 101 end = 164
+cycle     122	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 102 end = 165
+cycle     123	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 103 end = 166
+cycle     124	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 104 end = 167
+cycle     125	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     126	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 105 end = 168
+cycle     127	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 106 end = 169
+cycle     128	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 107 end = 170
+cycle     129	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     130	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 108 end = 171
+cycle     131	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 109 end = 172
+cycle     132	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 110 end = 173
+cycle     133	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     134	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 111 end = 174
+cycle     135	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 112 end = 175
+cycle     136	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 113 end = 176
+cycle     137	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 114 end = 177
+cycle     138	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 115 end = 178
+cycle     139	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 116 end = 179
+cycle     140	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 117 end = 180
+cycle     141	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 118 end = 181
+cycle     142	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 119 end = 182
+cycle     143	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     144	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 120 end = 183
+cycle     145	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 121 end = 184
+cycle     146	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 122 end = 185
+cycle     147	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     148	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 123 end = 186
+cycle     149	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 124 end = 187
+cycle     150	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 125 end = 188
+cycle     151	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     152	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 126 end = 189
+cycle     153	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 127 end = 190
+cycle     154	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 128 end = 191
+cycle     155	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 129 end = 192
+cycle     156	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 130 end = 193
+cycle     157	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 131 end = 194
+cycle     158	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 132 end = 195
+cycle     159	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 133 end = 196
+cycle     160	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 134 end = 197
+cycle     161	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     162	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 135 end = 198
+cycle     163	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 136 end = 199
+cycle     164	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 137 end = 200
+cycle     165	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     166	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 138 end = 201
+cycle     167	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 139 end = 202
+cycle     168	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 140 end = 203
+cycle     169	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     170	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 141 end = 204
+cycle     171	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 142 end = 205
+cycle     172	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 143 end = 206
+cycle     173	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 144 end = 207
+cycle     174	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 145 end = 208
+cycle     175	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 146 end = 209
+cycle     176	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 147 end = 210
+cycle     177	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 148 end = 211
+cycle     178	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 149 end = 212
+cycle     179	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     180	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 150 end = 213
+cycle     181	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 151 end = 214
+cycle     182	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 152 end = 215
+cycle     183	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     184	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 153 end = 216
+cycle     185	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 154 end = 217
+cycle     186	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 155 end = 218
+cycle     187	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     188	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 156 end = 219
+cycle     189	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 157 end = 220
+cycle     190	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 158 end = 221
+cycle     191	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 159 end = 222
+cycle     192	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 160 end = 223
+cycle     193	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 161 end = 224
+cycle     194	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 162 end = 225
+cycle     195	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 163 end = 226
+cycle     196	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 164 end = 227
+cycle     197	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     198	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 165 end = 228
+cycle     199	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 166 end = 229
+cycle     200	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 167 end = 230
+cycle     201	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     202	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 168 end = 231
+cycle     203	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 169 end = 232
+cycle     204	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 170 end = 233
+cycle     205	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     206	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 171 end = 234
+cycle     207	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 172 end = 235
+cycle     208	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 173 end = 236
+cycle     209	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 174 end = 237
+cycle     210	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 175 end = 238
+cycle     211	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 176 end = 239
+cycle     212	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 177 end = 240
+cycle     213	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 178 end = 241
+cycle     214	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 179 end = 242
+cycle     215	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     216	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 180 end = 243
+cycle     217	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 181 end = 244
+cycle     218	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 182 end = 245
+cycle     219	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     220	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 183 end = 246
+cycle     221	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 184 end = 247
+cycle     222	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 185 end = 248
+cycle     223	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     224	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 186 end = 249
+cycle     225	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 187 end = 250
+cycle     226	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 188 end = 251
+cycle     227	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 189 end = 252
+cycle     228	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 190 end = 253
+cycle     229	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 191 end = 254
+cycle     230	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 192 end = 255
+cycle     231	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 193 end = 256
+cycle     232	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 194 end = 257
+cycle     233	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     234	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 195 end = 258
+cycle     235	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 196 end = 259
+cycle     236	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 197 end = 260
+cycle     237	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     238	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 198 end = 261
+cycle     239	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 199 end = 262
+cycle     240	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 200 end = 263
+cycle     241	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     242	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 201 end = 264
+cycle     243	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 202 end = 265
+cycle     244	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 203 end = 266
+cycle     245	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 204 end = 267
+cycle     246	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 205 end = 268
+cycle     247	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 206 end = 269
+cycle     248	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 207 end = 270
+cycle     249	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 208 end = 271
+cycle     250	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 209 end = 272
+cycle     251	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     252	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 210 end = 273
+cycle     253	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 211 end = 274
+cycle     254	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 212 end = 275
+cycle     255	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     256	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 213 end = 276
+cycle     257	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 214 end = 277
+cycle     258	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 215 end = 278
+cycle     259	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     260	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 216 end = 279
+cycle     261	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 217 end = 280
+cycle     262	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 218 end = 281
+cycle     263	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 219 end = 282
+cycle     264	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 220 end = 283
+cycle     265	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 221 end = 284
+cycle     266	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 222 end = 285
+cycle     267	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 223 end = 286
+cycle     268	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 224 end = 287
+cycle     269	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     270	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 225 end = 288
+cycle     271	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 226 end = 289
+cycle     272	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 227 end = 290
+cycle     273	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     274	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 228 end = 291
+cycle     275	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 229 end = 292
+cycle     276	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 230 end = 293
+cycle     277	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     278	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 231 end = 294
+cycle     279	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 232 end = 295
+cycle     280	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 233 end = 296
+cycle     281	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 234 end = 297
+cycle     282	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 235 end = 298
+cycle     283	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 236 end = 299
+cycle     284	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 237 end = 300
+cycle     285	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 238 end = 301
+cycle     286	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 239 end = 302
+cycle     287	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     288	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 240 end = 303
+cycle     289	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 241 end = 304
+cycle     290	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 242 end = 305
+cycle     291	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     292	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 243 end = 306
+cycle     293	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 244 end = 307
+cycle     294	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 245 end = 308
+cycle     295	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     296	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 246 end = 309
+cycle     297	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 247 end = 310
+cycle     298	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 248 end = 311
+cycle     299	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 249 end = 312
+cycle     300	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 250 end = 313
+cycle     301	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 251 end = 314
+cycle     302	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 252 end = 315
+cycle     303	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 253 end = 316
+cycle     304	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 254 end = 317
+cycle     305	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     306	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 255 end = 318
+cycle     307	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 256 end = 319
+cycle     308	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 257 end = 320
+cycle     309	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     310	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 258 end = 321
+cycle     311	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 259 end = 322
+cycle     312	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 260 end = 323
+cycle     313	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     314	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 261 end = 324
+cycle     315	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 262 end = 325
+cycle     316	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 263 end = 326
+cycle     317	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 264 end = 327
+cycle     318	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 265 end = 328
+cycle     319	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 266 end = 329
+cycle     320	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 267 end = 330
+cycle     321	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 268 end = 331
+cycle     322	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 269 end = 332
+cycle     323	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     324	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 270 end = 333
+cycle     325	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 271 end = 334
+cycle     326	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 272 end = 335
+cycle     327	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     328	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 273 end = 336
+cycle     329	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 274 end = 337
+cycle     330	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 275 end = 338
+cycle     331	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     332	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 276 end = 339
+cycle     333	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 277 end = 340
+cycle     334	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 278 end = 341
+cycle     335	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 279 end = 342
+cycle     336	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 280 end = 343
+cycle     337	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 281 end = 344
+cycle     338	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 282 end = 345
+cycle     339	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 283 end = 346
+cycle     340	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 284 end = 346
+cycle     341	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     342	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 285 end = 346
+cycle     343	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 286 end = 346
+cycle     344	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 287 end = 346
+cycle     345	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     346	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 288 end = 351
+cycle     347	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 289 end = 352
+cycle     348	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 290 end = 353
+cycle     349	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     350	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 291 end = 354
+cycle     351	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 292 end = 355
+cycle     352	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 293 end = 356
+cycle     353	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 294 end = 357
+cycle     354	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 295 end = 358
+cycle     355	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 296 end = 359
+cycle     356	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 297 end = 360
+cycle     357	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 298 end = 361
+cycle     358	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 299 end = 362
+cycle     359	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     360	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 300 end = 363
+cycle     361	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 301 end = 364
+cycle     362	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 302 end = 365
+cycle     363	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     364	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 303 end = 366
+cycle     365	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 304 end = 367
+cycle     366	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 305 end = 368
+cycle     367	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     368	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 306 end = 369
+cycle     369	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 307 end = 370
+cycle     370	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 308 end = 371
+cycle     371	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 309 end = 372
+cycle     372	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 310 end = 373
+cycle     373	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 311 end = 374
+cycle     374	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 312 end = 375
+cycle     375	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 313 end = 376
+cycle     376	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 314 end = 377
+cycle     377	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     378	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 315 end = 378
+cycle     379	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 316 end = 379
+cycle     380	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 317 end = 380
+cycle     381	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     382	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 318 end = 381
+cycle     383	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 319 end = 382
+cycle     384	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 320 end = 383
+cycle     385	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     386	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 321 end = 384
+cycle     387	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 322 end = 385
+cycle     388	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 323 end = 386
+cycle     389	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 324 end = 387
+cycle     390	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 325 end = 388
+cycle     391	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 326 end = 389
+cycle     392	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 327 end = 390
+cycle     393	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 328 end = 391
+cycle     394	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 329 end = 392
+cycle     395	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     396	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 330 end = 393
+cycle     397	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 331 end = 394
+cycle     398	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 332 end = 395
+cycle     399	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     400	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 333 end = 396
+cycle     401	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 334 end = 397
+cycle     402	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 335 end = 398
+cycle     403	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     404	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 336 end = 399
+cycle     405	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 337 end = 400
+cycle     406	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 338 end = 401
+cycle     407	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 339 end = 402
+cycle     408	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 340 end = 403
+cycle     409	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 341 end = 404
+cycle     410	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 342 end = 405
+cycle     411	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 343 end = 406
+cycle     412	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 344 end = 407
+cycle     413	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     414	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 345 end = 408
+cycle     415	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 346 end = 409
+cycle     416	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 347 end = 410
+cycle     417	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     418	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 348 end = 411
+cycle     419	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 349 end = 412
+cycle     420	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 350 end = 413
+cycle     421	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     422	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 351 end = 414
+cycle     423	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 352 end = 415
+cycle     424	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 353 end = 416
+cycle     425	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 354 end = 417
+cycle     426	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 355 end = 418
+cycle     427	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 356 end = 419
+cycle     428	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 357 end = 420
+cycle     429	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 358 end = 421
+cycle     430	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 359 end = 422
+cycle     431	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     432	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 360 end = 423
+cycle     433	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 361 end = 424
+cycle     434	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 362 end = 425
+cycle     435	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     436	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 363 end = 426
+cycle     437	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 364 end = 427
+cycle     438	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 365 end = 428
+cycle     439	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     440	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 366 end = 429
+cycle     441	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 367 end = 430
+cycle     442	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 368 end = 431
+cycle     443	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 369 end = 432
+cycle     444	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 370 end = 433
+cycle     445	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 371 end = 434
+cycle     446	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 372 end = 435
+cycle     447	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 373 end = 436
+cycle     448	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 374 end = 437
+cycle     449	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     450	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 375 end = 438
+cycle     451	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 376 end = 439
+cycle     452	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 377 end = 440
+cycle     453	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     454	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 378 end = 441
+cycle     455	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 379 end = 442
+cycle     456	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 380 end = 443
+cycle     457	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     458	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 381 end = 444
+cycle     459	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 382 end = 445
+cycle     460	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 383 end = 446
+cycle     461	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 384 end = 447
+cycle     462	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 385 end = 448
+cycle     463	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 386 end = 449
+cycle     464	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 387 end = 450
+cycle     465	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 388 end = 451
+cycle     466	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 389 end = 452
+cycle     467	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     468	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 390 end = 453
+cycle     469	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 391 end = 454
+cycle     470	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 392 end = 455
+cycle     471	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     472	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 393 end = 456
+cycle     473	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 394 end = 457
+cycle     474	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 395 end = 458
+cycle     475	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     476	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 396 end = 459
+cycle     477	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 397 end = 460
+cycle     478	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 398 end = 461
+cycle     479	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 399 end = 462
+cycle     480	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 400 end = 463
+cycle     481	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 401 end = 464
+cycle     482	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 402 end = 465
+cycle     483	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 403 end = 466
+cycle     484	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 404 end = 467
+cycle     485	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     486	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 405 end = 468
+cycle     487	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 406 end = 469
+cycle     488	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 407 end = 470
+cycle     489	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     490	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 408 end = 471
+cycle     491	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 409 end = 472
+cycle     492	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 410 end = 473
+cycle     493	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     494	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 411 end = 474
+cycle     495	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 412 end = 475
+cycle     496	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 413 end = 476
+cycle     497	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 414 end = 477
+cycle     498	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 415 end = 478
+cycle     499	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 416 end = 479
+cycle     500	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 417 end = 480
+cycle     501	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 418 end = 481
+cycle     502	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 419 end = 482
+cycle     503	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     504	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 420 end = 483
+cycle     505	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 421 end = 484
+cycle     506	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 422 end = 485
+cycle     507	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     508	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 423 end = 486
+cycle     509	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 424 end = 487
+cycle     510	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 425 end = 488
+cycle     511	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     512	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 426 end = 489
+cycle     513	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 427 end = 490
+cycle     514	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 428 end = 491
+cycle     515	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 429 end = 492
+cycle     516	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 430 end = 493
+cycle     517	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 431 end = 494
+cycle     518	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 432 end = 495
+cycle     519	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 433 end = 496
+cycle     520	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 434 end = 497
+cycle     521	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     522	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 435 end = 498
+cycle     523	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 436 end = 499
+cycle     524	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 437 end = 500
+cycle     525	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     526	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 438 end = 501
+cycle     527	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 439 end = 502
+cycle     528	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 440 end = 503
+cycle     529	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     530	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 441 end = 504
+cycle     531	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 442 end = 505
+cycle     532	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 443 end = 506
+cycle     533	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 444 end = 507
+cycle     534	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 445 end = 508
+cycle     535	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 446 end = 509
+cycle     536	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 447 end = 510
+cycle     537	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 448 end = 511
+cycle     538	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 449 end = 512
+cycle     539	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     540	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 450 end = 513
+cycle     541	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 451 end = 514
+cycle     542	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 452 end = 515
+cycle     543	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     544	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 453 end = 516
+cycle     545	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 454 end = 517
+cycle     546	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 455 end = 518
+cycle     547	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     548	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 456 end = 519
+cycle     549	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 457 end = 520
+cycle     550	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 458 end = 521
+cycle     551	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 459 end = 522
+cycle     552	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 460 end = 523
+cycle     553	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 461 end = 524
+cycle     554	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 462 end = 525
+cycle     555	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 463 end = 526
+cycle     556	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 464 end = 527
+cycle     557	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     558	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 465 end = 528
+cycle     559	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 466 end = 529
+cycle     560	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 467 end = 530
+cycle     561	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     562	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 468 end = 531
+cycle     563	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 469 end = 532
+cycle     564	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 470 end = 533
+cycle     565	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     566	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 471 end = 534
+cycle     567	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 472 end = 535
+cycle     568	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 473 end = 536
+cycle     569	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 474 end = 537
+cycle     570	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 475 end = 538
+cycle     571	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 476 end = 539
+cycle     572	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 477 end = 540
+cycle     573	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 478 end = 541
+cycle     574	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 479 end = 542
+cycle     575	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     576	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 480 end = 543
+cycle     577	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 481 end = 544
+cycle     578	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 482 end = 545
+cycle     579	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     580	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 483 end = 546
+cycle     581	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 484 end = 547
+cycle     582	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 485 end = 548
+cycle     583	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     584	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 486 end = 549
+cycle     585	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 487 end = 550
+cycle     586	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 488 end = 551
+cycle     587	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 489 end = 552
+cycle     588	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 490 end = 553
+cycle     589	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 491 end = 554
+cycle     590	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 492 end = 555
+cycle     591	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 493 end = 556
+cycle     592	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 494 end = 557
+cycle     593	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     594	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 495 end = 558
+cycle     595	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 496 end = 559
+cycle     596	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 497 end = 560
+cycle     597	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     598	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 498 end = 561
+cycle     599	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 499 end = 562
+cycle     600	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 500 end = 563
+cycle     601	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     602	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 501 end = 564
+cycle     603	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 502 end = 565
+cycle     604	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 503 end = 566
+cycle     605	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 504 end = 567
+cycle     606	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 505 end = 568
+cycle     607	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 506 end = 569
+cycle     608	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 507 end = 570
+cycle     609	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 508 end = 571
+cycle     610	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 509 end = 572
+cycle     611	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     612	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 510 end = 573
+cycle     613	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 511 end = 574
+cycle     614	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 512 end = 575
+cycle     615	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     616	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 513 end = 576
+cycle     617	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 514 end = 577
+cycle     618	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 515 end = 578
+cycle     619	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     620	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 516 end = 579
+cycle     621	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 517 end = 580
+cycle     622	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 518 end = 581
+cycle     623	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 519 end = 582
+cycle     624	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 520 end = 583
+cycle     625	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 521 end = 584
+cycle     626	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 522 end = 585
+cycle     627	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 523 end = 586
+cycle     628	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 524 end = 587
+cycle     629	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     630	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 525 end = 588
+cycle     631	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 526 end = 589
+cycle     632	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 527 end = 590
+cycle     633	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     634	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 528 end = 591
+cycle     635	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 529 end = 592
+cycle     636	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 530 end = 593
+cycle     637	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     638	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 531 end = 594
+cycle     639	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 532 end = 595
+cycle     640	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 533 end = 596
+cycle     641	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 534 end = 597
+cycle     642	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 535 end = 598
+cycle     643	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 536 end = 599
+cycle     644	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 537 end = 600
+cycle     645	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 538 end = 600
+cycle     646	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 539 end = 600
+cycle     647	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     648	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 540 end = 600
+cycle     649	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 541 end = 600
+cycle     650	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 542 end = 600
+cycle     651	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     652	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 543 end = 600
+cycle     653	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 544 end = 600
+cycle     654	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 545 end = 600
+cycle     655	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     656	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 546 end = 600
+cycle     657	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 547 end = 600
+cycle     658	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 548 end = 600
+cycle     659	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 549 end = 600
+cycle     660	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 550 end = 600
+cycle     661	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 551 end = 600
+cycle     662	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 552 end = 600
+cycle     663	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 553 end = 600
+cycle     664	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 554 end = 600
+cycle     665	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     666	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 555 end = 600
+cycle     667	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 556 end = 600
+cycle     668	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 557 end = 600
+cycle     669	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     670	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 558 end = 600
+cycle     671	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 559 end = 600
+cycle     672	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 560 end = 600
+cycle     673	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     674	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 561 end = 600
+cycle     675	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 562 end = 600
+cycle     676	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 563 end = 600
+cycle     677	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 564 end = 600
+cycle     678	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 565 end = 600
+cycle     679	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 566 end = 600
+cycle     680	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 567 end = 600
+cycle     681	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 568 end = 600
+cycle     682	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 569 end = 600
+cycle     683	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     684	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 570 end = 600
+cycle     685	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 571 end = 600
+cycle     686	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 572 end = 600
+cycle     687	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     688	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 573 end = 600
+cycle     689	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 574 end = 600
+cycle     690	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 575 end = 600
+cycle     691	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     692	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 576 end = 600
+cycle     693	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 577 end = 600
+cycle     694	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 578 end = 600
+cycle     695	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 579 end = 600
+cycle     696	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 580 end = 600
+cycle     697	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 581 end = 600
+cycle     698	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 582 end = 600
+cycle     699	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 583 end = 600
+cycle     700	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 584 end = 600
+cycle     701	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     702	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 585 end = 600
+cycle     703	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 586 end = 600
+cycle     704	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 587 end = 600
+cycle     705	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     706	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 588 end = 600
+cycle     707	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 589 end = 600
+cycle     708	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 590 end = 600
+cycle     709	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     710	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 591 end = 600
+cycle     711	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 592 end = 600
+cycle     712	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 593 end = 600
+cycle     713	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 594 end = 600
+cycle     714	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 595 end = 600
+cycle     715	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 596 end = 600
+cycle     716	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 597 end = 600
+cycle     717	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 598 end = 600
+cycle     718	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 599 end = 600
+cycle     719	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     720	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 600 end = 601
+cycle     721	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 601 end = 625
+cycle     722	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 602 end = 647
+cycle     723	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     724	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 603 end = 666
+cycle     725	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 604 end = 667
+cycle     726	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 605 end = 668
+cycle     727	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     728	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 606 end = 669
+cycle     729	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 607 end = 670
+cycle     730	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 608 end = 671
+cycle     731	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 609 end = 672
+cycle     732	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 610 end = 673
+cycle     733	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 611 end = 674
+cycle     734	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 612 end = 675
+cycle     735	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 613 end = 676
+cycle     736	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 614 end = 677
+cycle     737	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     738	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 615 end = 678
+cycle     739	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 616 end = 679
+cycle     740	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 617 end = 680
+cycle     741	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     742	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 618 end = 681
+cycle     743	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 619 end = 682
+cycle     744	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 620 end = 683
+cycle     745	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     746	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 621 end = 684
+cycle     747	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 622 end = 685
+cycle     748	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 623 end = 686
+cycle     749	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 624 end = 687
+cycle     750	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 625 end = 688
+cycle     751	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 626 end = 689
+cycle     752	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 627 end = 690
+cycle     753	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 628 end = 691
+cycle     754	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 629 end = 692
+cycle     755	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     756	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 630 end = 693
+cycle     757	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 631 end = 694
+cycle     758	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 632 end = 695
+cycle     759	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     760	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 633 end = 696
+cycle     761	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 634 end = 697
+cycle     762	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 635 end = 698
+cycle     763	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     764	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 636 end = 699
+cycle     765	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 637 end = 700
+cycle     766	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 638 end = 701
+cycle     767	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 639 end = 702
+cycle     768	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 640 end = 703
+cycle     769	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 641 end = 704
+cycle     770	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 642 end = 705
+cycle     771	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 643 end = 706
+cycle     772	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 644 end = 707
+cycle     773	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     774	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 645 end = 708
+cycle     775	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 646 end = 709
+cycle     776	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 647 end = 710
+cycle     777	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     778	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 648 end = 711
+cycle     779	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 649 end = 712
+cycle     780	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 650 end = 713
+cycle     781	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     782	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 651 end = 714
+cycle     783	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 652 end = 715
+cycle     784	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 653 end = 716
+cycle     785	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 654 end = 717
+cycle     786	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 655 end = 718
+cycle     787	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 656 end = 719
+cycle     788	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 657 end = 720
+cycle     789	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 658 end = 721
+cycle     790	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 659 end = 722
+cycle     791	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     792	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 660 end = 723
+cycle     793	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 661 end = 724
+cycle     794	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 662 end = 725
+cycle     795	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     796	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 663 end = 726
+cycle     797	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 664 end = 727
+cycle     798	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 665 end = 728
+cycle     799	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     800	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 666 end = 729
+cycle     801	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 667 end = 730
+cycle     802	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 668 end = 731
+cycle     803	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 669 end = 732
+cycle     804	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 670 end = 733
+cycle     805	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 671 end = 734
+cycle     806	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 672 end = 735
+cycle     807	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 673 end = 736
+cycle     808	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 674 end = 737
+cycle     809	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     810	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 675 end = 738
+cycle     811	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 676 end = 739
+cycle     812	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 677 end = 740
+cycle     813	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     814	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 678 end = 741
+cycle     815	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 679 end = 742
+cycle     816	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 680 end = 743
+cycle     817	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     818	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 681 end = 744
+cycle     819	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 682 end = 745
+cycle     820	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 683 end = 746
+cycle     821	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 684 end = 747
+cycle     822	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 685 end = 748
+cycle     823	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 686 end = 749
+cycle     824	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 687 end = 750
+cycle     825	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 688 end = 751
+cycle     826	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 689 end = 752
+cycle     827	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     828	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 690 end = 753
+cycle     829	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 691 end = 754
+cycle     830	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 692 end = 755
+cycle     831	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     832	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 693 end = 756
+cycle     833	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 694 end = 757
+cycle     834	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 695 end = 758
+cycle     835	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     836	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 696 end = 759
+cycle     837	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 697 end = 760
+cycle     838	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 698 end = 761
+cycle     839	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 699 end = 762
+cycle     840	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 700 end = 763
+cycle     841	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 701 end = 764
+cycle     842	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 702 end = 765
+cycle     843	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 703 end = 766
+cycle     844	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 704 end = 767
+cycle     845	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     846	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 705 end = 768
+cycle     847	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 706 end = 769
+cycle     848	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 707 end = 770
+cycle     849	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     850	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 708 end = 771
+cycle     851	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 709 end = 772
+cycle     852	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 710 end = 773
+cycle     853	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     854	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 711 end = 774
+cycle     855	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 712 end = 775
+cycle     856	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 713 end = 776
+cycle     857	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 714 end = 777
+cycle     858	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 715 end = 778
+cycle     859	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 716 end = 779
+cycle     860	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 717 end = 780
+cycle     861	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 718 end = 781
+cycle     862	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 719 end = 782
+cycle     863	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     864	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 720 end = 783
+cycle     865	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 721 end = 784
+cycle     866	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 722 end = 785
+cycle     867	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     868	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 723 end = 786
+cycle     869	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 724 end = 787
+cycle     870	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 725 end = 788
+cycle     871	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     872	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 726 end = 789
+cycle     873	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 727 end = 790
+cycle     874	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 728 end = 791
+cycle     875	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 729 end = 792
+cycle     876	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 730 end = 793
+cycle     877	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 731 end = 794
+cycle     878	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 732 end = 795
+cycle     879	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 733 end = 796
+cycle     880	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 734 end = 797
+cycle     881	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     882	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 735 end = 798
+cycle     883	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 736 end = 799
+cycle     884	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 737 end = 800
+cycle     885	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     886	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 738 end = 801
+cycle     887	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 739 end = 802
+cycle     888	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 740 end = 803
+cycle     889	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     890	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 741 end = 804
+cycle     891	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 742 end = 805
+cycle     892	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 743 end = 806
+cycle     893	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 744 end = 807
+cycle     894	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 745 end = 808
+cycle     895	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 746 end = 809
+cycle     896	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 747 end = 810
+cycle     897	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 748 end = 811
+cycle     898	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 749 end = 812
+cycle     899	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     900	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 750 end = 813
+cycle     901	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 751 end = 814
+cycle     902	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 752 end = 815
+cycle     903	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     904	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 753 end = 816
+cycle     905	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 754 end = 817
+cycle     906	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 755 end = 818
+cycle     907	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     908	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 756 end = 819
+cycle     909	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 757 end = 820
+cycle     910	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 758 end = 821
+cycle     911	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 759 end = 822
+cycle     912	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 760 end = 823
+cycle     913	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 761 end = 824
+cycle     914	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 762 end = 825
+cycle     915	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 763 end = 826
+cycle     916	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 764 end = 827
+cycle     917	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     918	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 765 end = 828
+cycle     919	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 766 end = 829
+cycle     920	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 767 end = 830
+cycle     921	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     922	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 768 end = 831
+cycle     923	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 769 end = 832
+cycle     924	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 770 end = 833
+cycle     925	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     926	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 771 end = 834
+cycle     927	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 772 end = 835
+cycle     928	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 773 end = 836
+cycle     929	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 774 end = 837
+cycle     930	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 775 end = 838
+cycle     931	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 776 end = 839
+cycle     932	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 777 end = 840
+cycle     933	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 778 end = 841
+cycle     934	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 779 end = 842
+cycle     935	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     936	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 780 end = 843
+cycle     937	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 781 end = 844
+cycle     938	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 782 end = 845
+cycle     939	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     940	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 783 end = 846
+cycle     941	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 784 end = 847
+cycle     942	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 785 end = 848
+cycle     943	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     944	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 786 end = 849
+cycle     945	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 787 end = 850
+cycle     946	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 788 end = 851
+cycle     947	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 789 end = 852
+cycle     948	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 790 end = 853
+cycle     949	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 791 end = 854
+cycle     950	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 792 end = 855
+cycle     951	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 793 end = 856
+cycle     952	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 794 end = 857
+cycle     953	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     954	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 795 end = 858
+cycle     955	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 796 end = 859
+cycle     956	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 797 end = 860
+cycle     957	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     958	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 798 end = 861
+cycle     959	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 799 end = 862
+cycle     960	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 800 end = 863
+cycle     961	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     962	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 801 end = 864
+cycle     963	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 802 end = 865
+cycle     964	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 803 end = 866
+cycle     965	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 804 end = 867
+cycle     966	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 805 end = 868
+cycle     967	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 806 end = 869
+cycle     968	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 807 end = 870
+cycle     969	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 808 end = 871
+cycle     970	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 809 end = 872
+cycle     971	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     972	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 810 end = 873
+cycle     973	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 811 end = 874
+cycle     974	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 812 end = 875
+cycle     975	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     976	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 813 end = 876
+cycle     977	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 814 end = 877
+cycle     978	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 815 end = 878
+cycle     979	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     980	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 816 end = 879
+cycle     981	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 817 end = 880
+cycle     982	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 818 end = 881
+cycle     983	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 819 end = 882
+cycle     984	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 820 end = 883
+cycle     985	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 821 end = 884
+cycle     986	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 822 end = 885
+cycle     987	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 823 end = 886
+cycle     988	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 824 end = 887
+cycle     989	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle     990	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 825 end = 888
+cycle     991	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 826 end = 889
+cycle     992	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 827 end = 890
+cycle     993	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle     994	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 828 end = 891
+cycle     995	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 829 end = 892
+cycle     996	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 830 end = 893
+cycle     997	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle     998	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 831 end = 894
+cycle     999	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 832 end = 895
+cycle    1000	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 833 end = 896
+cycle    1001	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 834 end = 897
+cycle    1002	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 835 end = 898
+cycle    1003	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 836 end = 899
+cycle    1004	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 837 end = 900
+cycle    1005	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 838 end = 901
+cycle    1006	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 839 end = 902
+cycle    1007	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle    1008	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 840 end = 903
+cycle    1009	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 841 end = 904
+cycle    1010	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 842 end = 905
+cycle    1011	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle    1012	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 843 end = 906
+cycle    1013	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 844 end = 907
+cycle    1014	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 845 end = 908
+cycle    1015	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle    1016	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 846 end = 909
+cycle    1017	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 847 end = 910
+cycle    1018	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 848 end = 911
+cycle    1019	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 849 end = 912
+cycle    1020	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 850 end = 913
+cycle    1021	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 851 end = 914
+cycle    1022	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 852 end = 915
+cycle    1023	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 853 end = 916
+cycle    1024	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 854 end = 917
+cycle    1025	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle    1026	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 855 end = 918
+cycle    1027	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 856 end = 919
+cycle    1028	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 857 end = 920
+cycle    1029	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle    1030	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 858 end = 921
+cycle    1031	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 859 end = 922
+cycle    1032	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 860 end = 923
+cycle    1033	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle    1034	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 861 end = 924
+cycle    1035	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 862 end = 925
+cycle    1036	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 863 end = 926
+cycle    1037	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 864 end = 927
+cycle    1038	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 865 end = 928
+cycle    1039	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 866 end = 929
+cycle    1040	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 867 end = 930
+cycle    1041	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 868 end = 931
+cycle    1042	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 869 end = 932
+cycle    1043	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle    1044	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 870 end = 933
+cycle    1045	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 871 end = 934
+cycle    1046	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 872 end = 935
+cycle    1047	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle    1048	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 873 end = 936
+cycle    1049	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 874 end = 937
+cycle    1050	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 875 end = 938
+cycle    1051	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle    1052	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 876 end = 939
+cycle    1053	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 877 end = 940
+cycle    1054	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 878 end = 941
+cycle    1055	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 879 end = 942
+cycle    1056	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 880 end = 943
+cycle    1057	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 881 end = 944
+cycle    1058	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 882 end = 945
+cycle    1059	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 883 end = 946
+cycle    1060	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 884 end = 947
+cycle    1061	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle    1062	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 885 end = 948
+cycle    1063	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 886 end = 949
+cycle    1064	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 887 end = 950
+cycle    1065	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle    1066	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 888 end = 951
+cycle    1067	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 889 end = 952
+cycle    1068	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 890 end = 953
+cycle    1069	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle    1070	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 891 end = 954
+cycle    1071	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 892 end = 955
+cycle    1072	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 893 end = 956
+cycle    1073	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 894 end = 957
+cycle    1074	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 895 end = 958
+cycle    1075	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 896 end = 959
+cycle    1076	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 897 end = 960
+cycle    1077	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 898 end = 961
+cycle    1078	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 899 end = 962
+cycle    1079	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle    1080	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 900 end = 963
+cycle    1081	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+begin = 901 end = 964
+cycle    1082	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+begin = 902 end = 965
+cycle    1083	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle    1084	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+begin = 903 end = 966
+cycle    1085	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 904 end = 967
+cycle    1086	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 905 end = 968
+cycle    1087	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle    1088	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+begin = 906 end = 969
+cycle    1089	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+begin = 907 end = 970
+cycle    1090	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+begin = 908 end = 971
+cycle    1091	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+begin = 909 end = 972
+cycle    1092	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+begin = 910 end = 973
+cycle    1093	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+begin = 911 end = 974
+cycle    1094	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+begin = 912 end = 975
+cycle    1095	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+begin = 913 end = 976
+cycle    1096	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+begin = 914 end = 977
+cycle    1097	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle    1098	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+begin = 915 end = 978
+cycle    1099	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+cycle    1100	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+cycle    1101	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle    1102	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+cycle    1103	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+cycle    1104	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+cycle    1105	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle    1106	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+cycle    1107	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+cycle    1108	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+cycle    1109	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+cycle    1110	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+cycle    1111	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+cycle    1112	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+cycle    1113	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+cycle    1114	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+cycle    1115	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle    1116	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+cycle    1117	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+cycle    1118	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+cycle    1119	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle    1120	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+cycle    1121	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+cycle    1122	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+cycle    1123	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle    1124	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+cycle    1125	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+cycle    1126	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+cycle    1127	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+cycle    1128	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+cycle    1129	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+cycle    1130	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+cycle    1131	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+cycle    1132	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+cycle    1133	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle    1134	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+cycle    1135	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+cycle    1136	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+cycle    1137	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle    1138	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+cycle    1139	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+cycle    1140	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+cycle    1141	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle    1142	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+cycle    1143	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+cycle    1144	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+cycle    1145	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+cycle    1146	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+cycle    1147	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+cycle    1148	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+cycle    1149	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+cycle    1150	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+cycle    1151	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle    1152	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage LOAD   piped in	
+cycle    1153	 | IF:LOAD  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ALU    piped in	
+cycle    1154	 | IF:ALU   	| ID:LOAD  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage ALU    piped in	
+cycle    1155	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:BRANCH	 |
+cycle    1156	 | IF:ALU   	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage LOAD   piped in	
+cycle    1157	 | IF:LOAD  	| ID:ALU   	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+cycle    1158	 | IF:LOAD  	| ID:LOAD  	 | EX:ALU   	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage FPU    piped in	
+cycle    1159	 | IF:FPU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:ALU   	 | WB:ALU   	 |
+cycle    1160	 | IF:FPU   	| ID:LOAD  	 | EX:STALL 	 | MEM:LOAD  	 | WB:ALU   	 |
+Stage LOAD   piped in	
+cycle    1161	 | IF:LOAD  	| ID:FPU   	 | EX:LOAD  	 | MEM:STALL 	 | WB:LOAD  	 |
+Stage FPU    piped in	
+cycle    1162	 | IF:FPU   	| ID:LOAD  	 | EX:FPU   	 | MEM:LOAD  	 | WB:STALL 	 |
+Stage STORE  piped in	
+cycle    1163	 | IF:STORE 	| ID:FPU   	 | EX:LOAD  	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+cycle    1164	 | IF:LOAD  	| ID:STORE 	 | EX:FPU   	 | MEM:LOAD  	 | WB:FPU   	 |
+Stage ALU    piped in	
+cycle    1165	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:FPU   	 | WB:LOAD  	 |
+Stage STORE  piped in	
+cycle    1166	 | IF:STORE 	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:FPU   	 |
+Stage LOAD   piped in	
+cycle    1167	 | IF:LOAD  	| ID:STORE 	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage ALU    piped in	
+cycle    1168	 | IF:ALU   	| ID:LOAD  	 | EX:STORE 	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage BRANCH piped in	
+cycle    1169	 | IF:BRANCH	| ID:ALU   	 | EX:LOAD  	 | MEM:STORE 	 | WB:ALU   	 |
+cycle    1170	 | IF:STALL 	| ID:BRANCH	 | EX:ALU   	 | MEM:LOAD  	 | WB:STORE 	 |
+Stage MOVE   piped in	
+cycle    1171	 | IF:MOVE  	| ID:STALL 	 | EX:BRANCH	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage LOAD   piped in	
+cycle    1172	 | IF:LOAD  	| ID:MOVE  	 | EX:STALL 	 | MEM:BRANCH	 | WB:ALU   	 |
+Stage LOAD   piped in	
+cycle    1173	 | IF:LOAD  	| ID:LOAD  	 | EX:MOVE  	 | MEM:STALL 	 | WB:BRANCH	 |
+Stage ALU    piped in	
+cycle    1174	 | IF:ALU   	| ID:LOAD  	 | EX:LOAD  	 | MEM:MOVE  	 | WB:STALL 	 |
+Stage JR     piped in	
+cycle    1175	 | IF:JR    	| ID:ALU   	 | EX:LOAD  	 | MEM:LOAD  	 | WB:MOVE  	 |
+cycle    1176	 | IF:STALL 	| ID:JR    	 | EX:ALU   	 | MEM:LOAD  	 | WB:LOAD  	 |
+Stage ------ piped in	
+cycle    1177	 | IF:------	| ID:STALL 	 | EX:JR    	 | MEM:ALU   	 | WB:LOAD  	 |
+Stage ------ piped in	
+cycle    1178	 | IF:------	| ID:------	 | EX:STALL 	 | MEM:JR    	 | WB:ALU   	 |
+Stage ------ piped in	
+cycle    1179	 | IF:------	| ID:------	 | EX:------	 | MEM:STALL 	 | WB:JR    	 |
+Stage ------ piped in	
+cycle    1180	 | IF:------	| ID:------	 | EX:------	 | MEM:------	 | WB:STALL 	 |
+Stage ------ piped in	
+Single-cycle MIPS : 979
+ Multi-cycle MIPS : 5017
