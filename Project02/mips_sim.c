@@ -36,7 +36,7 @@ float  *f;
 long pc;
 
 bool dbgMode;
-long sigle_routing,mult_cycle;
+long sigle_routing, mult_cycle, pipeline_cycle;
 
 sem_t instnRAW;
 //指令相关
@@ -72,20 +72,21 @@ struct MIPS_pipeline{
     struct STAGE stages[5];
 };
 
-char alu[] = "ALU";
-char branch[] = "BRANCH";
-char jmp[] = "JMP";
-char move[] = "MOVE";
-char load[] = "LOAD";
-char store[] = "STORE";
-char jr[] = "JR";
-char fpu[] = "FPU";
-char error[] = "ERR";
-char stall[] = "STALL";
-char nop[] = "----";
+//stage type string
+char alu[]      = "ALU   ";
+char branch[]   = "BRANCH";
+char jmp[]      = "JMP   ";
+char move[]     = "MOVE  ";
+char load[]     = "LOAD  ";
+char store[]    = "STORE ";
+char jr[]       = "JR    ";
+char fpu[]      = "FPU   ";
+char error[]    = "ERR   ";
+char stall[]    = "STALL ";
+char nop[]      = "------";
 
 // 返回指令类型的函数，用于打印
-char *itype(struct STAGE stg) {
+char *stage_type(struct STAGE stg) {
     if (stg.stall)
         return stall;
     switch (stg.inst.OPCODE) {//ALU, FPU, BRANCH, JMP, JR, LOAD, STORE, MOVE
@@ -280,7 +281,7 @@ long INSN_LWC1(long pc, struct INSTR_FUCSIM *inst){
     int imm     = (int)(inst->IMM);
     void *value = read_mem((uint32)(rs + imm), sizeof(float));
     *fd = *(float *)value;
-    printf("lwc1:rt = %d , fd = %f, addr = %x\n",inst->RT,*fd,rs + imm);
+    // printf("lwc1:rt = %d , fd = %f, addr = %x\n",inst->RT,*fd,rs + imm);
     free(value);
     return pc+4;
 }
@@ -319,7 +320,7 @@ long INSN_ADDS(long pc, struct INSTR_FUCSIM *inst){
     float fs    = (float)*(f + inst->RS);
     float ft    = (float)*(f + inst->RT);
     *fd = fs + ft;
-    printf("adds: fd = %f fs = %f ft = %f\n",*fd,fs,ft);
+    // printf("adds: fd = %f fs = %f ft = %f\n",*fd,fs,ft);
     return pc+4;
 }
 
@@ -328,7 +329,7 @@ long INSN_MULS(long pc, struct INSTR_FUCSIM *inst){
     float fs    = (float)*(f + inst->RS);
     float ft    = (float)*(f + inst->RT);
     *fd = fs * ft;
-    printf("muls: fd = %f fs = %f ft = %f\n",*fd,fs,ft);
+    // printf("muls: fd = %f fs = %f ft = %f\n",*fd,fs,ft);
     return pc+4;
 }
 
@@ -347,15 +348,13 @@ void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M
                  StageE = P->stages[2],
                  StageM = P->stages[3],
                  StageW = P->stages[4];
-    struct STAGE StageI={true, false,*inst};
     //每个周期各个段的时序模拟在时钟上沿发生，判断流水线是否满足暂停
-    printf("Stage %s piped in\t\n",itype(StageI));
     again:
     *M_P_cycle += 1;
     // if(*M_P_cycle >= 50)exit(-1);
 
     printf("cycle %7d\t | IF:%s\t| ID:%s\t | EX:%s\t | MEM:%s\t | WB:%s\t |\n",
-           *M_P_cycle, itype(StageF), itype(StageD),itype(StageE), itype(StageM), itype(StageW));
+           *M_P_cycle, stage_type(StageF), stage_type(StageD),stage_type(StageE), stage_type(StageM), stage_type(StageW));
 
     //StageW
     StageW.stall = false;
@@ -444,6 +443,12 @@ void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M
     P->stages[2] = StageE,
     P->stages[3] = StageM,
     P->stages[4] = StageW;
+    struct STAGE StageI={true, false,*inst};
+    printf("Stage %s piped in\t\n",stage_type(StageI));
+    printf("cycle %7d\t | IF:%s\t| ID:%s\t | EX:%s\t | MEM:%s\t | WB:%s\t |\n",
+           *M_P_cycle, stage_type(StageF), stage_type(StageD),stage_type(StageE), stage_type(StageM), stage_type(StageW));
+    printf("---------------------------------------------------------------------\n");
+    fflush(stdout);
 }
 
 // shmget：申请共享内存
@@ -454,7 +459,7 @@ void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M
 void function_simulation(struct INSTR_FUCSIM *inst){
 
     if (inst->OPCODE != OP_RTYPE && inst->OPCODE != OP_FTYPE){// 若不是R and F型指令
-        printf("not R or F tpye\n");
+        // printf("not R or F tpye\n");
         switch (inst->OPCODE)
         {
             
@@ -465,28 +470,28 @@ void function_simulation(struct INSTR_FUCSIM *inst){
             case OP_BNE:
             pc = INSN_BNE(pc,inst); mult_cycle+=3;inst->opcode = BRANCH;break;
             case OP_ADDI:
-            pc = INSN_ADDI(pc,inst);mult_cycle+=5;inst->opcode = ALU;printf("addi\n");   break;
-            // pc = INSN_ADDI(pc,inst);mult_cycle+=5;inst->opcode = ALU;   break;
+            // pc = INSN_ADDI(pc,inst);mult_cycle+=5;inst->opcode = ALU;printf("addi\n");   break;
+            pc = INSN_ADDI(pc,inst);mult_cycle+=5;inst->opcode = ALU;   break;
             case OP_SLTI:
             pc = INSN_SLTI(pc,inst);mult_cycle+=5;inst->opcode = ALU;   break;
             case OP_LW:
             pc = INSN_LW(pc,inst);  mult_cycle+=5;inst->opcode = LOAD;  break;
             case OP_SW:
-            pc = INSN_SW(pc,inst);  mult_cycle+=5;inst->opcode = STORE;printf("sw\n");  break;
-            // pc = INSN_SW(pc,inst);  mult_cycle+=5;inst->opcode = STORE;  break;
+            // pc = INSN_SW(pc,inst);  mult_cycle+=5;inst->opcode = STORE;printf("sw\n");  break;
+            pc = INSN_SW(pc,inst);  mult_cycle+=5;inst->opcode = STORE;  break;
             case OP_LWC1:
             pc = INSN_LWC1(pc,inst);mult_cycle+=5;inst->opcode = LOAD;  break;
             case OP_SWC1:
             pc = INSN_SWC1(pc,inst);mult_cycle+=5;inst->opcode = STORE; break;
             case OP_MOVE:
-            pc = INSN_MOVE(pc,inst);mult_cycle+=5;inst->opcode = MOVE;printf("move\n");  break;
-            // pc = INSN_MOVE(pc,inst);mult_cycle+=5;inst->opcode = MOVE;  break;
+            // pc = INSN_MOVE(pc,inst);mult_cycle+=5;inst->opcode = MOVE;printf("move\n");  break;
+            pc = INSN_MOVE(pc,inst);mult_cycle+=5;inst->opcode = MOVE;  break;
             default: printf("error: unimplemented instruction\n"); exit(-1);
         }
 
     }
     else if(inst->OPCODE == OP_RTYPE){
-        printf("R-type\n");
+        // printf("R-type\n");
         switch (inst->FUNC){
             case OP_ADD:
             pc = INSN_ADD(pc, inst);mult_cycle+=5;inst->opcode = ALU;   break;
@@ -498,7 +503,7 @@ void function_simulation(struct INSTR_FUCSIM *inst){
         }
     }
     else{
-        printf("F-type\n");
+        // printf("F-type\n");
         switch (inst->FUNC){
             case OP_ADDS:
             pc = INSN_ADDS(pc, inst);mult_cycle+=6;inst->opcode = FPU; break;
@@ -550,7 +555,7 @@ void Execution(){
             if(data->finish == 1)
                 break;
             if(data->inst_begin < data->inst_end){
-                printf("begin = %d end = %d\n", data->inst_begin, data->inst_end);
+                // printf("begin = %d end = %d\n", data->inst_begin, data->inst_end);
                 timing_simulation((struct INSTR_TIMSIM *)&data->insts[data->inst_begin % TEXT_SZ],
                               (struct MIPS_pipeline *) &data->pipeline,(int *)&data->mips_pipeline_cycle);
                 data->inst_begin++;
@@ -612,7 +617,7 @@ void Execution(){
                 Sem_wait(&instnRAW);
             }
             memcpy((void *)&data->insts[data->inst_end % TEXT_SZ],inst_timsim,sizeof(struct INSTR_TIMSIM));
-            printf("op = %d\n",data->insts[data->inst_end].OPCODE);
+            // printf("op = %d\n",data->insts[data->inst_end].OPCODE);
             data->inst_end++;
             if(pc == 0)data->finish = 1;
             Sem_post(&instnRAW);
@@ -627,6 +632,7 @@ void Execution(){
             exit(1);
         }
 
+        pipeline_cycle = data->mips_pipeline_cycle;
         // 父进程结束前，断开共享内存连接
         if (shmdt(data) == -1) {
             perror("shmdt");
@@ -724,6 +730,6 @@ int main(int argc,char *argv[]){
     free(r);
     free(f);
 
-    printf("Single-cycle MIPS : %ld\n Multi-cycle MIPS : %ld\n",sigle_routing,mult_cycle);
+    printf("Single-cycle MIPS : %ld\n Multi-cycle MIPS : %ld\nPipline-cycle : %ld\n",sigle_routing,mult_cycle,pipeline_cycle);
     return 0;
 }
