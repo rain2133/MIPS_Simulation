@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <math.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -54,7 +53,7 @@ enum COM_CODE{
 
 struct INSTR_TIMSIM{
     char OPCODE,RS,RT,RD;
-    int IMM,ADDR;
+    int IMM;
 }INSTR_TIMSIM_NOP;
 
 struct STAGE{
@@ -73,6 +72,63 @@ struct MIPS_pipeline{
     struct STAGE stages[5];
 };
 
+#define DC_NUM_SETS     16 //组数
+#define DC_SET_SIZE     16 //组内块数
+#define DC_BLOCK_SIZE   (DC_NUM_SETS*DC_SET_SIZE) //块大小
+#define DC_WR_BUFF_SIZE 16 //写缓冲区大小
+#define DC_INVALID      0 
+#define DC_VALID        1
+#define DC_DIRTY        2
+
+#define MemRdLatency    2
+
+struct cacheBlk { 
+    int tag; 
+    int status; //0 表示无效 invalid 1 表示有效valid 2 表示 脏 dirty
+    int trdy;   //最近一次使用时间
+} dCache[DC_NUM_SETS][DC_SET_SIZE];
+
+struct writeBuffer{ 
+    int tag; 
+    int trdy; 
+} dcWrBuff[DC_WR_BUFF_SIZE]; 
+
+/*
+blkOffsetBits = log2( DC_BLOCK_SIZE); 
+indexMask = (unsigned)(DC_NUM_SETS - 1); 
+tagMask = ~indexMask; 
+
+blk = ((unsigned)addr) >> blkOffsetBits; 
+index = (int)(blk & indexMask); 
+tag = (int)(blk & tagMask);
+
+
+for( i = 0; i < DC_SET_SIZE; i++) { 
+      if ( (dCache[index][i].tag == tag) && (dCache[index][i].status != DC_INVALID) ) { 
+     *slot = i; 
+     return( TRUE); 
+    } else    // Find a possible replacement line 
+    if ( dCache[index][i].trdy < lruTime) { 
+       lruTime = dCache[index][i].trdy; 
+     lruSlot = i; 
+    } 
+   }
+//replace cacheblk whose index is lruSlot
+
+//  读命中 
+ dcBlock -> trdy = time;
+//  写命中 
+ dcBlock -> trdy = time; 
+ dcBlock -> status = 2;
+
+//
+int trdy = MemRdLatency; 
+ if ( dcBlock -> status == 2 )   //  如果被换出的块为脏块 
+  trdy += wrBack( tag, time ); 
+ dcBlock -> tag = tag; 
+ dcBlock -> trdy = time + trdy; 
+ dcBlock -> status = 1;
+*/
 
 //stage type string
 char alu[]      = "ALU   ";
@@ -156,8 +212,6 @@ struct INSTR_TIMSIM *FUCDecode2TIM(struct INSTR_FUCSIM *inst){
         inst_timsim->RD += ireg_size;
     }
     inst_timsim->IMM = inst->IMM;
-    inst_timsim->ADDR = (int)*(r + inst->RS) + inst->IMM;//只有在lw,sw,lwc1,swc1指令中才需要计算地址
-    // printf("rs = %d, rt = %d, rd = %d, imm = %d, addr = %d\n",inst->RS,inst->RT,inst->RD,inst->IMM,inst_timsim->ADDR);
     return inst_timsim;
 }
 
@@ -340,97 +394,6 @@ long INSN_NOP(long pc, struct INSTR_FUCSIM *inst){
     return pc+4;
 }
 
-//cache 相关
-#define DC_NUM_SETS     16 //组数
-#define DC_SET_SIZE     16 //组内块数
-#define DC_BLOCK_SIZE   16 //块大小
-#define DC_WR_BUFF_SIZE 16 //写缓冲区大小
-#define DC_INVALID      0 
-#define DC_VALID        1
-#define DC_DIRTY        2
-
-#define MemRdLatency    2
-
-struct CacheBlk { 
-    int tag; 
-    int status; //0 表示无效 invalid 1 表示有效valid 2 表示 脏 dirty
-    int trdy;   //最近一次使用时间
-} dCache[DC_NUM_SETS][DC_SET_SIZE];
-
-struct WriteBuffer{ 
-    int tag; 
-    int trdy; 
-} dcWrBuff[DC_WR_BUFF_SIZE]; 
-
-/*
-
-*/
-
-/*
-accessDCache( int opcode, int addr, int cycle)
-在时序模拟中模拟cache的行为
-返回值为当前LW,SW指令的延迟时间
-该时间将会影响MIPS组件 DM_的属性 从而实现数据cache未命中流水线暂停等功能
-*/
-int accessdCache(int opcode, int addr, int cycle){
-    int blkOffsetBits, indexMask, tagMask, index, tag, blk;
-    int hit = false;
-    int slot;
-    int lruTime = cycle, lruSlot;
-
-    //划分字段
-    blkOffsetBits = log2( DC_BLOCK_SIZE); 
-    indexMask = (unsigned)(DC_NUM_SETS - 1); 
-    tagMask = ~indexMask; 
-
-    blk = ((unsigned)addr) >> blkOffsetBits; 
-    index = (int)(blk & indexMask); 
-    tag = (int)(blk & tagMask);
-
-    for(int i = 0; i < DC_SET_SIZE; i++) { 
-        if((dCache[index][i].tag == tag) && (dCache[index][i].status != DC_INVALID) ) { 
-            slot = i, hit = true;
-            break;
-        } 
-        else if (dCache[index][i].trdy < lruTime){ // Find a possible replacement line 
-            lruTime = dCache[index][i].trdy; 
-            lruSlot = i; 
-        } 
-    }
-    //replace cacheblk whose index is lruSlot
-    
-    struct CacheBlk *dcBlock;
-    if(hit){
-        dcBlock = &dCache[index][slot];
-        //  读命中 
-        dcBlock->trdy = cycle;
-        //  写命中 
-        if(opcode == STORE)dcBlock->status = 2;
-    }
-    else{
-        dcBlock = &dCache[index][lruSlot];
-        int trdy;
-        if(opcode == LOAD){
-            trdy = MemRdLatency; 
-            if(dcBlock -> status == 2)   //  如果被换出的块为脏块 
-                trdy += WrBack(tag, cycle); 
-            dcBlock -> tag = tag; 
-            dcBlock -> trdy = cycle + trdy; 
-            dcBlock -> status = 1;
-        }
-        if(opcode == STORE){
-            trdy = 0; 
-            if ( dcBlock->status == 2) /* Must remote write-back old data */ 
-                trdy = WrBack(tag, cycle); 
-            else 
-                dcBlock->status = 2; 
-            /* Read in cache line we wish to update */ 
-            trdy += MemRdLatency; 
-            dcBlock->tag = tag; 
-            dcBlock->trdy = cycle + trdy;
-        }
-    }
-}
 /*
 时序模拟
 模拟到当前指令进入stageF,如果finish = 1那么需要将指令模拟到从stageW流出
@@ -456,13 +419,7 @@ void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M
         StageW.valid = true; 
         //WB always not being stallE
     }
-    
-    //模拟cache行为
-    if(inst->OPCODE == LOAD || inst->OPCODE == STORE){
-        // printf("cache access\n");
-        int access_delay = accessdCache(StageM.inst.OPCODE, StageM.inst.ADDR, *M_P_cycle);
-    }
-    //
+        
     //StageM
     StageM.stall = false;
     if(!(P->DM_.busy)){
