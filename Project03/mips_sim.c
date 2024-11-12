@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <math.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -17,8 +18,8 @@ typedef unsigned short   uint16;
 typedef unsigned int     uint32;
 typedef unsigned long    uint64;
 
-char *mem; 		         // Ö÷´æÆğÊ¼µØÖ·Ö¸Õë
-int   mem_size=0x080000;	 // Ö÷´æµÄ´óĞ¡
+char *mem; 		         // ä¸»å­˜èµ·å§‹åœ°å€æŒ‡é’ˆ
+int   mem_size=0x080000;	 // ä¸»å­˜çš„å¤§å°
 
 #define PCINIT  0x020000
 #define SPINIT  0x060000
@@ -27,10 +28,10 @@ int   mem_size=0x080000;	 // Ö÷´æµÄ´óĞ¡
 #define REGSIZE 32
 #define FEGSIZE 16
 
-int   ireg_size = 32;       // Í¨ÓÃ¼Ä´æÆ÷ÎÄ¼şµÄ´óĞ¡
-int  *r;                  // Í¨ÓÃ¼Ä´æÆ÷ÎÄ¼şÆğÊ¼µØÖ·Ö¸Õë
+int   ireg_size = 32;       // é€šç”¨å¯„å­˜å™¨æ–‡ä»¶çš„å¤§å°
+int  *r;                  // é€šç”¨å¯„å­˜å™¨æ–‡ä»¶èµ·å§‹åœ°å€æŒ‡é’ˆ
 
-int   freg_size = 16;       // ¸¡µã¼Ä´æÆ÷ÎÄ¼şµÄ´óĞ¡
+int   freg_size = 16;       // æµ®ç‚¹å¯„å­˜å™¨æ–‡ä»¶çš„å¤§å°
 float  *f; 
 
 long pc;
@@ -39,7 +40,7 @@ bool dbgMode;
 long sigle_routing, mult_cycle, pipeline_cycle;
 
 sem_t instnRAW;
-//Ö¸ÁîÏà¹Ø
+//æŒ‡ä»¤ç›¸å…³
 struct INSTR_FUCSIM{
     int OPCODE,RS,RT,RD,IMM,OFFSET,SHAMT,FUNC,LABEL;
     //         FS FT FD
@@ -53,13 +54,13 @@ enum COM_CODE{
 
 struct INSTR_TIMSIM{
     char OPCODE,RS,RT,RD;
-    int IMM;
+    int IMM,ADDR;
 }INSTR_TIMSIM_NOP;
 
 struct STAGE{
     char valid,stall;
-    //valid¶¨ÒåÊÇ¸Ã¶ÎÃ»ÓĞÔİÍ£±»¼Ì³Ğµ½ÏÂÒ»¶Î
-    //Èç¹ûÊÇtrue±íÃ÷¸Ã¶Î»òÕßºóĞø¶Î´¦ÓÚstall×´Ì¬ÏÂÒ»¸öÊ±ÖÓÉÏÑØ½«stall×´Ì¬È¡Ïû
+    //validå®šä¹‰æ˜¯è¯¥æ®µæ²¡æœ‰æš‚åœè¢«ç»§æ‰¿åˆ°ä¸‹ä¸€æ®µ
+    //å¦‚æœæ˜¯trueè¡¨æ˜è¯¥æ®µæˆ–è€…åç»­æ®µå¤„äºstallçŠ¶æ€ä¸‹ä¸€ä¸ªæ—¶é’Ÿä¸Šæ²¿å°†stallçŠ¶æ€å–æ¶ˆ
     struct INSTR_TIMSIM inst;
 };
 
@@ -72,63 +73,6 @@ struct MIPS_pipeline{
     struct STAGE stages[5];
 };
 
-#define DC_NUM_SETS     16 //×éÊı
-#define DC_SET_SIZE     16 //×éÄÚ¿éÊı
-#define DC_BLOCK_SIZE   (DC_NUM_SETS*DC_SET_SIZE) //¿é´óĞ¡
-#define DC_WR_BUFF_SIZE 16 //Ğ´»º³åÇø´óĞ¡
-#define DC_INVALID      0 
-#define DC_VALID        1
-#define DC_DIRTY        2
-
-#define MemRdLatency    2
-
-struct cacheBlk { 
-    int tag; 
-    int status; //0 ±íÊ¾ÎŞĞ§ invalid 1 ±íÊ¾ÓĞĞ§valid 2 ±íÊ¾ Ôà dirty
-    int trdy;   //×î½üÒ»´ÎÊ¹ÓÃÊ±¼ä
-} dCache[DC_NUM_SETS][DC_SET_SIZE];
-
-struct writeBuffer{ 
-    int tag; 
-    int trdy; 
-} dcWrBuff[DC_WR_BUFF_SIZE]; 
-
-/*
-blkOffsetBits = log2( DC_BLOCK_SIZE); 
-indexMask = (unsigned)(DC_NUM_SETS - 1); 
-tagMask = ~indexMask; 
-
-blk = ((unsigned)addr) >> blkOffsetBits; 
-index = (int)(blk & indexMask); 
-tag = (int)(blk & tagMask);
-
-
-for( i = 0; i < DC_SET_SIZE; i++) { 
-      if ( (dCache[index][i].tag == tag) && (dCache[index][i].status != DC_INVALID) ) { 
-     *slot = i; 
-     return( TRUE); 
-    } else    // Find a possible replacement line 
-    if ( dCache[index][i].trdy < lruTime) { 
-       lruTime = dCache[index][i].trdy; 
-     lruSlot = i; 
-    } 
-   }
-//replace cacheblk whose index is lruSlot
-
-//  ¶ÁÃüÖĞ 
- dcBlock -> trdy = time;
-//  Ğ´ÃüÖĞ 
- dcBlock -> trdy = time; 
- dcBlock -> status = 2;
-
-//
-int trdy = MemRdLatency; 
- if ( dcBlock -> status == 2 )   //  Èç¹û±»»»³öµÄ¿éÎªÔà¿é 
-  trdy += wrBack( tag, time ); 
- dcBlock -> tag = tag; 
- dcBlock -> trdy = time + trdy; 
- dcBlock -> status = 1;
-*/
 
 //stage type string
 char alu[]      = "ALU   ";
@@ -143,7 +87,7 @@ char error[]    = "ERR   ";
 char stall[]    = "STALL ";
 char nop[]      = "------";
 
-// ·µ»ØÖ¸ÁîÀàĞÍµÄº¯Êı£¬ÓÃÓÚ´òÓ¡
+// è¿”å›æŒ‡ä»¤ç±»å‹çš„å‡½æ•°ï¼Œç”¨äºæ‰“å°
 char *stage_type(struct STAGE stg) {
     if (stg.stall)
         return stall;
@@ -177,8 +121,8 @@ struct shared_mem{
     char finish;
     int inst_begin,inst_end;
     int mips_pipeline_cycle;
-    // struct INSTR_FUCSIM insts[TEXT_SZ];//¼ÇÂ¼Ğ´ÈëºÍ¶ÁÈ¡µÄÎÄ±¾
-    struct MIPS_pipeline pipeline;//inst_begin½øÈëstageFºó¸ÃÁ÷Ë®Ïß¸÷²¿·ÖºÍ¸÷²¿¼şµÄ×´Ì¬
+    // struct INSTR_FUCSIM insts[TEXT_SZ];//è®°å½•å†™å…¥å’Œè¯»å–çš„æ–‡æœ¬
+    struct MIPS_pipeline pipeline;//inst_beginè¿›å…¥stageFåè¯¥æµæ°´çº¿å„éƒ¨åˆ†å’Œå„éƒ¨ä»¶çš„çŠ¶æ€
     struct INSTR_TIMSIM insts[TEXT_SZ];
 };
 
@@ -187,9 +131,9 @@ struct INSTR_FUCSIM *InstDecode(unsigned int insn,bool debug){
     int RS 	    = (insn >> 21) & 0x1f;
     int RT		= (insn >> 16) & 0x1f;
     int RD		= (insn >> 11) & 0x1f;
-    int IMM		= (int)((short)(insn & 0xffff)); 		// Õâ¸ö±í´ïÊ½ÊµÏÖÁË·ûºÅÀ©Õ¹
+    int IMM		= (int)((short)(insn & 0xffff)); 		// è¿™ä¸ªè¡¨è¾¾å¼å®ç°äº†ç¬¦å·æ‰©å±•
     int OFFSET	= (int)((short)(insn & 0xffff)); 
-    unsigned int UIMM	= (unsigned int)(insn & 0xffff); 	// Õâ¸ö±í´ïÊ½ÊµÏÖÁË0À©Õ¹
+    unsigned int UIMM	= (unsigned int)(insn & 0xffff); 	// è¿™ä¸ªè¡¨è¾¾å¼å®ç°äº†0æ‰©å±•
     int SHAMT   = (insn >>6) & 0x1f;
     int FUNC	= insn & 0x3f;
     int LABEL	= insn & 0x3ffffff;
@@ -199,25 +143,27 @@ struct INSTR_FUCSIM *InstDecode(unsigned int insn,bool debug){
 }
 
 struct INSTR_TIMSIM *FUCDecode2TIM(struct INSTR_FUCSIM *inst){
-    //½«¹¦ÄÜÖ¸ÁîĞòÁĞ×ª»¯ÎªÊ±ĞòÖ¸ÁîĞòÁĞ(¼õÉÙ¹²ÏíÄÚ´æ¿Õ¼ä¿ªÏú)
+    //å°†åŠŸèƒ½æŒ‡ä»¤åºåˆ—è½¬åŒ–ä¸ºæ—¶åºæŒ‡ä»¤åºåˆ—(å‡å°‘å…±äº«å†…å­˜ç©ºé—´å¼€é”€)
     struct INSTR_TIMSIM *inst_timsim = (struct INSTR_TIMSIM *)malloc(sizeof(struct INSTR_TIMSIM));
     inst_timsim->OPCODE = inst->opcode;
     inst_timsim->RS = inst->RS;
     inst_timsim->RT = inst->RT;
     inst_timsim->RD = inst->RD;
     if(inst_timsim->OPCODE == FPU){
-        //°Ñ¸¡µã¼Ä´æÆ÷ºÍÕûĞÍ¼Ä´æÆ÷Çø·Ö¿ª
+        //æŠŠæµ®ç‚¹å¯„å­˜å™¨å’Œæ•´å‹å¯„å­˜å™¨åŒºåˆ†å¼€
         inst_timsim->RS += ireg_size;
         inst_timsim->RT += ireg_size;
         inst_timsim->RD += ireg_size;
     }
     inst_timsim->IMM = inst->IMM;
+    inst_timsim->ADDR = (int)*(r + inst->RS) + inst->IMM;//åªæœ‰åœ¨lw,sw,lwc1,swc1æŒ‡ä»¤ä¸­æ‰éœ€è¦è®¡ç®—åœ°å€
+    // printf("rs = %d, rt = %d, rd = %d, imm = %d, addr = %d\n",inst->RS,inst->RT,inst->RD,inst->IMM,inst_timsim->ADDR);
     return inst_timsim;
 }
 
 /*
-¶Á·ÃÎÊ£¬¼´¶Á³ö´æ·ÅÔÚÄ³¸öÖ÷´æµ¥ÔªÖĞµÄÊı¾İ
-Ğ´·ÃÎÊ£¬¼´½«Êı¾İĞ´ÈëÖ÷´æÖĞµÄÌØ¶¨µ¥Ôª
+è¯»è®¿é—®ï¼Œå³è¯»å‡ºå­˜æ”¾åœ¨æŸä¸ªä¸»å­˜å•å…ƒä¸­çš„æ•°æ®
+å†™è®¿é—®ï¼Œå³å°†æ•°æ®å†™å…¥ä¸»å­˜ä¸­çš„ç‰¹å®šå•å…ƒ
 */
 
 void write_mem(void* value, uint32 address, size_t size) {
@@ -394,9 +340,161 @@ long INSN_NOP(long pc, struct INSTR_FUCSIM *inst){
     return pc+4;
 }
 
+//cache ç›¸å…³
+#define DC_NUM_SETS     8 //ç»„æ•°
+#define DC_SET_SIZE     4 //ç»„å†…è¡Œæ•°
+#define DC_BLOCK_SIZE   16  //æ¯è¡Œçš„å—å¤§å°
+#define DC_WR_BUFF_SIZE 8 //å†™ç¼“å†²åŒºå¤§å°
+#define DC_INVALID      0 
+#define DC_VALID        1
+#define DC_DIRTY        2
+
+#define MemRdLatency    3
+#define HitdCLtcy       1
+#define WrMergLtcy      0
+#define ClearWrBfLtcy   1
+#define AddBlk2WrBfLtcy 0
+#define FlushWrBfLtcy   3
+
+struct CacheBlk { 
+    int tag; 
+    int status; //0 è¡¨ç¤ºæ— æ•ˆ invalid 1 è¡¨ç¤ºæœ‰æ•ˆvalid 2 è¡¨ç¤º è„ dirty
+    int trdy;   //æœ€è¿‘ä¸€æ¬¡ä½¿ç”¨æ—¶é—´
+} dCache[DC_NUM_SETS][DC_SET_SIZE];
+
+struct WriteBuffer{ 
+    int tag;
+    int index;
+    int trdy; 
+} dcWrBuff[DC_WR_BUFF_SIZE]; 
+int bufsize = 0;
+//æè¿°cacheè¡Œä¸ºçš„å˜é‡
+int  WrMergeFlag, WrFlushFlag, HitFlag;
 /*
-Ê±ĞòÄ£Äâ
-Ä£Äâµ½µ±Ç°Ö¸Áî½øÈëstageF,Èç¹ûfinish = 1ÄÇÃ´ĞèÒª½«Ö¸ÁîÄ£Äâµ½´ÓstageWÁ÷³ö
+WrBack(int tag, int index,int cycle)
+æ‰§è¡Œå†™å›ç­–ç•¥
+å†™åˆå¹¶åŠŸèƒ½
+å†™å‘½ä¸­ï¼Œéœ€è¦å°†è„å—å†™å…¥buffer
+è¯»æœªå‘½ä¸­ï¼Œéœ€è¦å°†æ›¿æ¢è„å—å†™å…¥buffer
+å†™æœªå‘½ä¸­ï¼Œéœ€è¦å°†æ–°çš„å—å†™å…¥buffer
+WrBackæ‰§è¡Œæµç¨‹å¯æ€»ç»“ä¸º
+å…ˆæ‰§è¡Œå†™åˆå¹¶
+ç„¶åæ£€æŸ¥bufferæ˜¯ä¸æ˜¯æ»¡äº†ï¼Œæ»¡äº†å°±å¢åŠ latencyç„¶åæ¸…ç©ºbuffer
+å¦‚æœæ²¡æœ‰å†™åˆå¹¶åˆ™å°†å—æ”¾å…¥buffer
+*/
+int WrBack(int tag, int index , int cycle, int opcode){
+    WrMergeFlag = false,WrFlushFlag = false;
+    int WB_latency = 0;
+    
+    if(opcode == LOAD){
+        bufsize = 0;
+        WrFlushFlag = true;    
+        WB_latency += FlushWrBfLtcy;
+    }
+    //å°†å†™å›ç¼“å­˜åˆ·æ–°,é¿å…ä»ä¸»å­˜æ‹¿åˆ°æ—§æ•°æ®
+    
+    for(int i = 0; i < bufsize; i++)
+        if(dcWrBuff[i].index == index && dcWrBuff[i].tag == tag){
+            WrMergeFlag = true;
+            WB_latency += WrMergLtcy;
+            break;
+        }
+    
+    if(bufsize >= DC_WR_BUFF_SIZE){//æ¸…ç©ºå†™å›ç¼“å­˜æ‰¹é‡å†™å›
+        WrFlushFlag = true;
+        WB_latency += FlushWrBfLtcy;
+        bufsize = 0;
+    }
+    //æœªæ‰§è¡Œå†™åˆå¹¶
+    if(WrMergeFlag == false){
+        WB_latency += AddBlk2WrBfLtcy;
+        dcWrBuff[bufsize].tag   = tag;
+        dcWrBuff[bufsize].index = index;
+        dcWrBuff[bufsize].trdy  = cycle + WB_latency;
+        bufsize++;
+    }
+    return WB_latency;
+}
+
+/*
+accessDCache( int opcode, int addr, int cycle)
+åœ¨æ—¶åºæ¨¡æ‹Ÿä¸­æ¨¡æ‹Ÿcacheçš„è¡Œä¸º
+è¿”å›å€¼ä¸ºå½“å‰LW,SWæŒ‡ä»¤çš„å»¶è¿Ÿæ—¶é—´
+è¯¥æ—¶é—´å°†ä¼šå½±å“MIPSç»„ä»¶ DM_çš„å±æ€§ ä»è€Œå®ç°æ•°æ®cacheæœªå‘½ä¸­æµæ°´çº¿æš‚åœç­‰åŠŸèƒ½
+*/
+int accessdCache(int opcode, int addr, int cycle){
+    int blkOffsetBits, indexMask, tagMask, index, tag, blk;
+    int hit = false;
+    int lruTime = cycle, slot, lruSlot;
+    int latency = 0;
+    //åˆ’åˆ†å­—æ®µ
+    blkOffsetBits = log2(DC_BLOCK_SIZE); //å—åç§»
+    indexMask = (unsigned)(DC_NUM_SETS - 1); //0xF ç»„ç´¢å¼•
+    tagMask = ~indexMask; //0xFFFFFFF0 æ ‡è®°
+
+    blk = ((unsigned)addr) >> blkOffsetBits; 
+    index = (int)(blk & indexMask); 
+    tag = (int)(blk & tagMask);
+
+    for(int i = 0; i < DC_SET_SIZE; i++) { 
+        if((dCache[index][i].tag == tag) && (dCache[index][i].status != DC_INVALID) ) { 
+            slot = i, hit = true, HitFlag = true;
+            break;
+        } 
+        else if (dCache[index][i].trdy < lruTime){ // Find a possible replacement line 
+            lruTime = dCache[index][i].trdy; 
+            lruSlot = i; 
+        } 
+    }
+    //replace cacheblk whose index is lruSlot
+    
+    struct CacheBlk *dcBlock;
+    if(hit){
+        dcBlock = &dCache[index][slot];
+        int trdy;
+        trdy = HitdCLtcy;
+        //  è¯»å‘½ä¸­
+        dcBlock->trdy = cycle;
+        //  å†™å‘½ä¸­ 
+        if(opcode == STORE){
+            dcBlock->status = 2;
+            trdy += WrBack(dcBlock->tag, index, cycle, opcode);
+        }
+        latency = trdy;
+    }
+    else{
+        dcBlock = &dCache[index][lruSlot];
+        int trdy;
+        if(opcode == LOAD){
+            //è¯»ä¸å‘½ä¸­
+            trdy = MemRdLatency; 
+            if(dcBlock -> status == 2)   //  å¦‚æœè¢«æ¢å‡ºçš„å—ä¸ºè„å— 
+                trdy += WrBack(dcBlock->tag, index, cycle, opcode); 
+
+            dcBlock -> tag = tag; 
+            dcBlock -> trdy = cycle + trdy; 
+            dcBlock -> status = 1;
+            latency = trdy;
+        }
+        if(opcode == STORE){
+            //å†™ä¸å‘½ä¸­
+            trdy = MemRdLatency; 
+            if (dcBlock->status == 2) /* Must remote write-back old data */ 
+                trdy += WrBack(dcBlock->tag, index, cycle, opcode);
+            /* Read in cache line we wish to update */ 
+            dcBlock->tag = tag; 
+            dcBlock->trdy = cycle + trdy;
+            dcBlock->status = 2;
+            //å°†æ–°çš„è„å—å†™å…¥å†™å›ç¼“å­˜
+            trdy += WrBack(dcBlock->tag, index, cycle, opcode);
+            latency = trdy;
+        }
+    }
+    return latency;
+}
+/*
+æ—¶åºæ¨¡æ‹Ÿ
+æ¨¡æ‹Ÿåˆ°å½“å‰æŒ‡ä»¤è¿›å…¥stageF,å¦‚æœfinish = 1é‚£ä¹ˆéœ€è¦å°†æŒ‡ä»¤æ¨¡æ‹Ÿåˆ°ä»stageWæµå‡º
 */
 void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M_P_cycle){
     struct STAGE StageF = P->stages[0],
@@ -404,12 +502,13 @@ void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M
                  StageE = P->stages[2],
                  StageM = P->stages[3],
                  StageW = P->stages[4];
-    //Ã¿¸öÖÜÆÚ¸÷¸ö¶ÎµÄÊ±ĞòÄ£ÄâÔÚÊ±ÖÓÉÏÑØ·¢Éú£¬ÅĞ¶ÏÁ÷Ë®ÏßÊÇ·ñÂú×ãÔİÍ£
+    int dc_delay = 0;
+    //æ¯ä¸ªå‘¨æœŸå„ä¸ªæ®µçš„æ—¶åºæ¨¡æ‹Ÿåœ¨æ—¶é’Ÿä¸Šæ²¿å‘ç”Ÿï¼Œåˆ¤æ–­æµæ°´çº¿æ˜¯å¦æ»¡è¶³æš‚åœ
     again:
     *M_P_cycle += 1;
-    // if(*M_P_cycle >= 50)exit(-1);
+    // if(*M_P_cycle >= 100)exit(-1);
 
-    printf("cycle %7d\t | IF:%s\t| ID:%s\t | EX:%s\t | MEM:%s\t | WB:%s\t |\n",
+    printf("cycle %7d before clock rising edge | IF:%s\t| ID:%s\t | EX:%s\t | MEM:%s\t | WB:%s\t |\n",
            *M_P_cycle, stage_type(StageF), stage_type(StageD),stage_type(StageE), stage_type(StageM), stage_type(StageW));
 
     //StageW
@@ -419,28 +518,50 @@ void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M
         StageW.valid = true; 
         //WB always not being stallE
     }
-        
+    
+    //æ¨¡æ‹Ÿcacheè¡Œä¸º
+    if((StageM.inst.OPCODE == LOAD || StageM.inst.OPCODE == STORE) && StageM.valid && !(P->DM_.busy)){//è¿™ä¸ªLW,SWæŒ‡ä»¤ç¬¬ä¸€æ¬¡è®¡ç®—delay
+        printf("Note:dCache access\n");
+        WrMergeFlag = false, WrFlushFlag = false, HitFlag = false;
+        dc_delay = accessdCache(StageM.inst.OPCODE, StageM.inst.ADDR, *M_P_cycle);
+        if(WrMergeFlag)                              printf("Note:Write Merge happend\n");
+        if(WrFlushFlag)                              printf("Note:Write Cache Flush\n");
+        if(HitFlag && StageM.inst.OPCODE == LOAD)    printf("Note:Load  Hit\n");
+        else if (StageM.inst.OPCODE == LOAD)         printf("Note:Load  Miss\n");
+        if(HitFlag && StageM.inst.OPCODE == STORE)   printf("Note:Store  Hit\n");
+        else if (StageM.inst.OPCODE == STORE)        printf("Note:Store  Miss\n");
+    }
+    //æ¯æ¡æŒ‡ä»¤æµå…¥MEMæ®µé¦–å…ˆåˆ·æ–°DM->å¤„ç†è‹¥å¹²cycle->è§£é™¤DMçš„busyçŠ¶æ€
+    //clock before rising edge
+    if(dc_delay > 0)P->DM_.busy = true;
+    
+
+    //clock after2 rsing edge
+    if(P->DM_.busy)dc_delay--;
+    if(dc_delay <= 0)P->DM_.busy = false;
+    if(P->DM_.busy)printf("dCache busy, delay = %d\n",dc_delay);
     //StageM
-    StageM.stall = false;
-    if(!(P->DM_.busy)){
+
+    if(!P->DM_.busy)StageM.stall = false;
+    if(!P->DM_.busy && StageW.valid){
         StageM = StageE;
         StageM.valid = true;
     }
     else{
-        //µÈÒıÈëcacheÎ´ÃüÖĞ²Å»á½øÈëÕâ¸ö·ÖÖ§
+        //ç­‰å¼•å…¥cacheå»¶è¿Ÿæ‰ä¼šè¿›å…¥è¿™ä¸ªåˆ†æ”¯
         if(!StageW.stall){
             StageM.stall = true;
         }
         StageM.valid = false;
-        //cacheÎ´ÃüÖĞ´¦ÀíÍê³ÉÖ¸ÁîÁ÷×ß£¨ºóĞøÍØÕ¹£©
+        //cacheæœªå‘½ä¸­å¤„ç†å®ŒæˆæŒ‡ä»¤æµèµ°ï¼ˆåç»­æ‹“å±•ï¼‰
     }
 
     //StageE
     StageE.stall = false;
     if(!(!StageW.valid || !StageM.valid || P->FPU_.busy || P->ALU_.busy || 
          (StageE.inst.OPCODE == LOAD && StageE.valid &&
-         //LWÖ¸ÁîĞèÒª×ßµ½MEM¶Î²ÅÄÜÈÃÊı¾İÕıÈ·¶¨Ïòµ½ID¶Î
-         //Èç¹ûLWÖ¸ÁîÁ÷³ö´Ë´¦ÇÒÓĞ³åÍ»ÄÇÃ´¸ÃÌõ¼ş½«»áÔÚÏÂÒ»¸öcycleÈ¡ÏûÔİÍ£
+         //LWæŒ‡ä»¤éœ€è¦èµ°åˆ°MEMæ®µæ‰èƒ½è®©æ•°æ®æ­£ç¡®å®šå‘åˆ°IDæ®µ
+         //å¦‚æœLWæŒ‡ä»¤æµå‡ºæ­¤å¤„ä¸”æœ‰å†²çªé‚£ä¹ˆè¯¥æ¡ä»¶å°†ä¼šåœ¨ä¸‹ä¸€ä¸ªcycleå–æ¶ˆæš‚åœ
           (StageD.inst.RS == StageE.inst.RD ||  
            StageD.inst.RT == StageE.inst.RD)
          ) 
@@ -449,7 +570,7 @@ void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M
         StageE.valid = true;
     }
     else{
-        //ÔİÍ£Á÷Ë®ÏßµÈ´ıLOAD½øÈëMEM¶Î¶Á³öÊı¾İ
+        //æš‚åœæµæ°´çº¿ç­‰å¾…LOADè¿›å…¥MEMæ®µè¯»å‡ºæ•°æ®
         if(!StageW.stall && !StageM.stall){
             StageE.stall = true;
         }
@@ -476,7 +597,7 @@ void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M
     }
 
     //StageF
-    //Èç¹ûÎ´¼Ì³Ğ¶ÎÊÇ·ÖÖ§Ö¸ÁîÄÇÃ´ÔİÍ£Á÷Ë®ÏßµÈ´ıIDEX¶ÎÍê³É·ÖÖ§Ìø×ª
+    //å¦‚æœæœªç»§æ‰¿æ®µæ˜¯åˆ†æ”¯æŒ‡ä»¤é‚£ä¹ˆæš‚åœæµæ°´çº¿ç­‰å¾…IDEXæ®µå®Œæˆåˆ†æ”¯è·³è½¬
     StageF.stall = false;
     if(!(!StageW.valid || !StageM.valid|| !StageE.valid || !StageD.valid ||
         P->IM_.busy ||
@@ -501,20 +622,20 @@ void timing_simulation(struct INSTR_TIMSIM *inst, struct MIPS_pipeline *P,int *M
     P->stages[4] = StageW;
     struct STAGE StageI={true, false,*inst};
     printf("Stage %s piped in\t\n",stage_type(StageI));
-    printf("cycle %7d\t | IF:%s\t| ID:%s\t | EX:%s\t | MEM:%s\t | WB:%s\t |\n",
+    printf("cycle %7d after2 clock rising edge | IF:%s\t| ID:%s\t | EX:%s\t | MEM:%s\t | WB:%s\t |\n",
            *M_P_cycle, stage_type(StageF), stage_type(StageD),stage_type(StageE), stage_type(StageM), stage_type(StageW));
     printf("---------------------------------------------------------------------\n");
     fflush(stdout);
 }
 
-// shmget£ºÉêÇë¹²ÏíÄÚ´æ
-// shmat:½¨Á¢ÓÃ»§½ø³Ì¿Õ¼äµ½¹²ÏíÄÚ´æµÄÓ³Éä
-// shmdt:½â³ıÓ³Éä¹ØÏµ
-// shmctl:»ØÊÕ¹²ÏíÄÚ´æ¿Õ¼ä
+// shmgetï¼šç”³è¯·å…±äº«å†…å­˜
+// shmat:å»ºç«‹ç”¨æˆ·è¿›ç¨‹ç©ºé—´åˆ°å…±äº«å†…å­˜çš„æ˜ å°„
+// shmdt:è§£é™¤æ˜ å°„å…³ç³»
+// shmctl:å›æ”¶å…±äº«å†…å­˜ç©ºé—´
 
 void function_simulation(struct INSTR_FUCSIM *inst){
 
-    if (inst->OPCODE != OP_RTYPE && inst->OPCODE != OP_FTYPE){// Èô²»ÊÇR and FĞÍÖ¸Áî
+    if (inst->OPCODE != OP_RTYPE && inst->OPCODE != OP_FTYPE){// è‹¥ä¸æ˜¯R and Få‹æŒ‡ä»¤
         // printf("not R or F tpye\n");
         switch (inst->OPCODE)
         {
@@ -552,7 +673,7 @@ void function_simulation(struct INSTR_FUCSIM *inst){
             case OP_ADD:
             pc = INSN_ADD(pc, inst);mult_cycle+=5;inst->opcode = ALU;   break;
             case OP_JR:
-            pc = INSN_JR(pc, inst); mult_cycle+=3;inst->opcode = JR;   break;//´ıÑéÖ¤opcode
+            pc = INSN_JR(pc, inst); mult_cycle+=3;inst->opcode = JR;   break;//å¾…éªŒè¯opcode
             case OP_SLL:
             pc = INSN_SLL(pc, inst);mult_cycle+=5;inst->opcode = ALU;   break;
             default: printf("error: unimplemented instruction\n"); exit(-1);
@@ -573,15 +694,15 @@ void function_simulation(struct INSTR_FUCSIM *inst){
 }
 
 void Execution(){
-    pc = 0x1000;									// ½«³ÌĞòµÄÈë¿ÚµØÖ·ÉèÎª0x1000
+    pc = 0x1000;									// å°†ç¨‹åºçš„å…¥å£åœ°å€è®¾ä¸º0x1000
 
-    Sem_init(&instnRAW, 1, 1);//³õÊ¼»¯ĞÅºÅÁ¿ÔÚ½ø³ÌÖĞÍ¨ĞÅ
+    Sem_init(&instnRAW, 1, 1);//åˆå§‹åŒ–ä¿¡å·é‡åœ¨è¿›ç¨‹ä¸­é€šä¿¡
 
     key_t key = ftok("./input",32);
-    int shmid;                // ¹²ÏíÄÚ´æ±êÊ¶·û
-    struct shared_mem *data;               // ¹²ÏíÄÚ´æµÄµØÖ·
+    int shmid;                // å…±äº«å†…å­˜æ ‡è¯†ç¬¦
+    struct shared_mem *data;               // å…±äº«å†…å­˜çš„åœ°å€
     pid_t pid = fork();
-    // ´´½¨¹²ÏíÄÚ´æ
+    // åˆ›å»ºå…±äº«å†…å­˜
     shmid = shmget(key, sizeof(struct shared_mem), 0644 | IPC_CREAT);
 
     // printf("shmid = %d\n",shmid);
@@ -596,8 +717,8 @@ void Execution(){
     }
     
     if (pid == 0) {
-        // ×Ó½ø³Ì
-        // ½«¹²ÏíÄÚ´æÁ¬½Óµ½µ±Ç°½ø³ÌµÄµØÖ·¿Õ¼ä
+        // å­è¿›ç¨‹
+        // å°†å…±äº«å†…å­˜è¿æ¥åˆ°å½“å‰è¿›ç¨‹çš„åœ°å€ç©ºé—´
         data = (struct shared_mem *)shmat(shmid, (void *)0, 0);
         // printf("data = %lx",data);
         if (data == (struct shared_mem *)(-1)) {
@@ -605,9 +726,9 @@ void Execution(){
             exit(1);
         }
         while (1) {
-            // ¶ÁÈ¡¹²ÏíÄÚ´æÖĞµÄÊı¾İ²¢´¦Àí
+            // è¯»å–å…±äº«å†…å­˜ä¸­çš„æ•°æ®å¹¶å¤„ç†
             Sem_wait(&instnRAW);
-            //¼ÆËã¶àÖÜÆÚÊıÁ¿
+            //è®¡ç®—å¤šå‘¨æœŸæ•°é‡
             if(data->finish == 1)
                 break;
             if(data->inst_begin < data->inst_end){
@@ -635,9 +756,9 @@ void Execution(){
         exit(0);
     }
     else{
-        // ¸¸½ø³Ì
+        // çˆ¶è¿›ç¨‹
         
-        // ½«¹²ÏíÄÚ´æÁ¬½Óµ½µ±Ç°½ø³ÌµÄµØÖ·¿Õ¼ä
+        // å°†å…±äº«å†…å­˜è¿æ¥åˆ°å½“å‰è¿›ç¨‹çš„åœ°å€ç©ºé—´
         data = (struct shared_mem *)shmat(shmid, (void *)0, 0);
         if (data == (struct shared_mem *)(-1)) {
             perror("shmat");
@@ -657,12 +778,12 @@ void Execution(){
         for (;pc;){    
 
             // printf("pc = %lx\n",pc);
-            uint32 insn = *(uint32 *)read_mem(pc,sizeof(int)); 	// ¶ÁµÚÒ»ÌõÖ¸Áî
-            //°Ñ»úÆ÷´úÂë·ÅÈëintÊı×éÖĞ
+            uint32 insn = *(uint32 *)read_mem(pc,sizeof(int)); 	// è¯»ç¬¬ä¸€æ¡æŒ‡ä»¤
+            //æŠŠæœºå™¨ä»£ç æ”¾å…¥intæ•°ç»„ä¸­
             struct INSTR_FUCSIM *inst = InstDecode(insn,1);
-            // Ö¸ÁîÒëÂë
+            // æŒ‡ä»¤è¯‘ç 
             
-            //¹¦ÄÜÄ£Äâ
+            //åŠŸèƒ½æ¨¡æ‹Ÿ
             function_simulation(inst);
 
             struct INSTR_TIMSIM *inst_timsim = FUCDecode2TIM(inst);
@@ -689,13 +810,13 @@ void Execution(){
         }
 
         pipeline_cycle = data->mips_pipeline_cycle;
-        // ¸¸½ø³Ì½áÊøÇ°£¬¶Ï¿ª¹²ÏíÄÚ´æÁ¬½Ó
+        // çˆ¶è¿›ç¨‹ç»“æŸå‰ï¼Œæ–­å¼€å…±äº«å†…å­˜è¿æ¥
         if (shmdt(data) == -1) {
             perror("shmdt");
             exit(1);
         }
 
-        // É¾³ı¹²ÏíÄÚ´æ
+        // åˆ é™¤å…±äº«å†…å­˜
         if (shmctl(shmid, IPC_RMID, NULL) == -1) {
             perror("shmctl");
             exit(1);
@@ -723,7 +844,7 @@ void init(){
         printf("error: float. Register file allocation\n");
         exit(-1);
     }
-    //³õÊ¼»¯Ö¸Õë
+    //åˆå§‹åŒ–æŒ‡é’ˆ
     /*
         $ra = 0 $sp = 0x8000 $gp = 0x0000
     */
